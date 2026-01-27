@@ -1,0 +1,60 @@
+import { Link } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
+import { Activity, PenLine, Calendar, Heart } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const actions = [
+  {
+    icon: Activity,
+    label: "Check-in",
+    description: "Log today",
+    path: "/tracker",
+    color: "bg-primary/10 text-primary",
+  },
+  {
+    icon: PenLine,
+    label: "Journal",
+    description: "Write entry",
+    path: "/journal",
+    color: "bg-accent text-accent-foreground",
+  },
+  {
+    icon: Calendar,
+    label: "Appointments",
+    description: "View upcoming",
+    path: "/appointments",
+    color: "bg-chart-1/10 text-chart-1",
+  },
+  {
+    icon: Heart,
+    label: "Guidance",
+    description: "Tips & care",
+    path: "/guidance",
+    color: "bg-chart-2/10 text-chart-2",
+  },
+];
+
+export function QuickActions() {
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {actions.map((action) => (
+        <Link key={action.path} to={action.path}>
+          <Card className="h-full transition-all hover:shadow-md hover:scale-[1.02] active:scale-[0.98]">
+            <CardContent className="p-4">
+              <div
+                className={cn(
+                  "h-10 w-10 rounded-lg flex items-center justify-center mb-3",
+                  action.color
+                )}
+              >
+                <action.icon className="h-5 w-5" />
+              </div>
+              <h3 className="font-medium text-foreground">{action.label}</h3>
+              <p className="text-xs text-muted-foreground">{action.description}</p>
+            </CardContent>
+          </Card>
+        </Link>
+      ))}
+    </div>
+  );
+}
