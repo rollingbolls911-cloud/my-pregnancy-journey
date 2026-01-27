@@ -1,6 +1,7 @@
 import { TodayCard } from "@/components/home/TodayCard";
 import { QuickActions } from "@/components/home/QuickActions";
 import { GuidancePreview } from "@/components/home/GuidancePreview";
+import { QuickNotes } from "@/components/home/QuickNotes";
 import { ProfileSetup } from "@/components/setup/ProfileSetup";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { usePregnancy } from "@/contexts/PregnancyContext";
@@ -76,6 +77,11 @@ function HomePage() {
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-foreground mb-3">Quick Actions</h2>
           <QuickActions />
+        </div>
+
+        {/* Quick Notes */}
+        <div className="mb-6">
+          <QuickNotes />
         </div>
 
         {/* Upcoming Appointment */}
