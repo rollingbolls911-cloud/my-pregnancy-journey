@@ -3,19 +3,19 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { usePregnancy } from "@/contexts/PregnancyContext";
 import { MOODS, SYMPTOMS, ENERGY_LEVELS } from "@/lib/pregnancy";
 import {
   saveDailyLog,
   getDailyLogByDate,
   DailyLog,
-  generateId,
 } from "@/lib/storage";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { Check, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { hapticFeedback } from "@/lib/haptics";
+import { celebrate } from "@/lib/celebrations";
 
 export default function Tracker() {
   const { gestationalAge } = usePregnancy();
@@ -28,6 +28,14 @@ export default function Tracker() {
   >([]);
   const [notes, setNotes] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const isHapticsEnabled = () => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("bloom-haptics") !== "false";
+    }
+    return true;
+  };
 
   // Load existing log for today
   useEffect(() => {
@@ -42,9 +50,10 @@ export default function Tracker() {
   }, [today]);
 
   const toggleSymptom = (symptomId: string) => {
+    if (isHapticsEnabled()) hapticFeedback("light");
+    
     const existing = selectedSymptoms.find((s) => s.symptomId === symptomId);
     if (existing) {
-      // Cycle through severity 1-3, then remove
       if (existing.severity >= 3) {
         setSelectedSymptoms(selectedSymptoms.filter((s) => s.symptomId !== symptomId));
       } else {
@@ -63,7 +72,19 @@ export default function Tracker() {
     return selectedSymptoms.find((s) => s.symptomId === symptomId)?.severity || 0;
   };
 
+  const handleMoodSelect = (value: number) => {
+    setSelectedMood(value);
+    if (isHapticsEnabled()) hapticFeedback("light");
+  };
+
+  const handleEnergySelect = (value: number) => {
+    setSelectedEnergy(value);
+    if (isHapticsEnabled()) hapticFeedback("light");
+  };
+
   const handleSave = () => {
+    setIsSaving(true);
+    
     const moodData = selectedMood
       ? MOODS.find((m) => m.value === selectedMood)
       : undefined;
@@ -85,9 +106,16 @@ export default function Tracker() {
     };
 
     saveDailyLog(log);
+    
+    // Haptic and celebration feedback
+    if (isHapticsEnabled()) hapticFeedback("success");
+    celebrate("small");
+    
     toast.success("Check-in saved!", {
       description: "Your daily log has been recorded.",
     });
+    
+    setIsSaving(false);
   };
 
   if (!gestationalAge) {
@@ -132,9 +160,9 @@ export default function Tracker() {
               {MOODS.map((mood) => (
                 <button
                   key={mood.value}
-                  onClick={() => setSelectedMood(mood.value)}
+                  onClick={() => handleMoodSelect(mood.value)}
                   className={cn(
-                    "flex-1 flex flex-col items-center gap-1 p-3 rounded-lg transition-all",
+                    "flex-1 flex flex-col items-center gap-1 p-3 rounded-lg transition-all active:scale-95",
                     selectedMood === mood.value
                       ? "bg-primary/10 ring-2 ring-primary"
                       : "bg-muted/50 hover:bg-muted"
@@ -158,9 +186,9 @@ export default function Tracker() {
               {ENERGY_LEVELS.map((energy) => (
                 <button
                   key={energy.value}
-                  onClick={() => setSelectedEnergy(energy.value)}
+                  onClick={() => handleEnergySelect(energy.value)}
                   className={cn(
-                    "flex-1 py-3 rounded-lg text-sm font-medium transition-all",
+                    "flex-1 py-3 rounded-lg text-sm font-medium transition-all active:scale-95",
                     selectedEnergy === energy.value
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted/50 text-muted-foreground hover:bg-muted"
@@ -188,7 +216,7 @@ export default function Tracker() {
                     key={symptom.id}
                     onClick={() => toggleSymptom(symptom.id)}
                     className={cn(
-                      "flex items-center gap-2 p-3 rounded-lg text-left transition-all",
+                      "flex items-center gap-2 p-3 rounded-lg text-left transition-all active:scale-95",
                       severity > 0
                         ? severity === 1
                           ? "bg-chart-1/20 ring-1 ring-chart-1"
@@ -201,7 +229,7 @@ export default function Tracker() {
                     <span className="text-lg">{symptom.icon}</span>
                     <div className="flex-1 min-w-0">
                       <span className="text-sm font-medium text-foreground">{symptom.label}</span>
-                        {severity > 0 && (
+                      {severity > 0 && (
                         <div className="flex gap-0.5 mt-1">
                           {[1, 2, 3].map((level) => (
                             <div
@@ -244,9 +272,14 @@ export default function Tracker() {
         </Card>
 
         {/* Save Button */}
-        <Button onClick={handleSave} className="w-full h-12 text-lg" size="lg">
+        <Button 
+          onClick={handleSave} 
+          className="w-full h-12 text-lg active:scale-95 transition-transform" 
+          size="lg"
+          disabled={isSaving}
+        >
           <Sparkles className="h-5 w-5 mr-2" />
-          Save Check-in
+          {isSaving ? "Saving..." : "Save Check-in"}
         </Button>
       </div>
     </AppLayout>

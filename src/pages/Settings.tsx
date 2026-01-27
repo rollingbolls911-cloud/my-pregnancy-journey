@@ -27,11 +27,24 @@ import {
   Shield,
   AlertCircle,
   Flower2,
+  Moon,
+  Sun,
+  Monitor,
+  Vibrate,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
+import { isHapticsSupported } from "@/lib/haptics";
 
 export default function Settings() {
   const { profile, resetProfile } = usePregnancy();
+  const { theme, setTheme } = useTheme();
+  const [hapticsEnabled, setHapticsEnabled] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("bloom-haptics") !== "false";
+    }
+    return true;
+  });
 
   const handleExport = () => {
     const data = exportAllData();
@@ -51,6 +64,15 @@ export default function Settings() {
     clearAllData();
     resetProfile();
     toast.success("All data cleared");
+  };
+
+  const handleHapticsToggle = (enabled: boolean) => {
+    setHapticsEnabled(enabled);
+    localStorage.setItem("bloom-haptics", String(enabled));
+    if (enabled && isHapticsSupported()) {
+      navigator.vibrate(10);
+    }
+    toast.success(enabled ? "Haptic feedback enabled" : "Haptic feedback disabled");
   };
 
   return (
@@ -89,6 +111,79 @@ export default function Settings() {
                 <span className="font-medium text-foreground">
                   {format(new Date(profile.createdAt), "MMM d, yyyy")}
                 </span>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Appearance */}
+        <Card className="mb-4">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Moon className="h-5 w-5" />
+              Appearance
+            </CardTitle>
+            <CardDescription>
+              Choose your preferred color theme
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-2">
+              <Button
+                variant={theme === "light" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setTheme("light")}
+                className="flex-1"
+              >
+                <Sun className="h-4 w-4 mr-2" />
+                Light
+              </Button>
+              <Button
+                variant={theme === "dark" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setTheme("dark")}
+                className="flex-1"
+              >
+                <Moon className="h-4 w-4 mr-2" />
+                Dark
+              </Button>
+              <Button
+                variant={theme === "system" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setTheme("system")}
+                className="flex-1"
+              >
+                <Monitor className="h-4 w-4 mr-2" />
+                Auto
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Haptics */}
+        {isHapticsSupported() && (
+          <Card className="mb-4">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Vibrate className="h-5 w-5" />
+                Haptic Feedback
+              </CardTitle>
+              <CardDescription>
+                Vibration on actions (mobile only)
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Enable vibrations</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Subtle feedback on saves and actions
+                  </p>
+                </div>
+                <Switch 
+                  checked={hapticsEnabled} 
+                  onCheckedChange={handleHapticsToggle}
+                />
               </div>
             </CardContent>
           </Card>
