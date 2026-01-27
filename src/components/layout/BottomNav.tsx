@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Home, Calendar, Activity, BookHeart, Heart, Settings } from "lucide-react";
+import { Home, Calendar, Activity, BookHeart, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -12,18 +12,18 @@ const navItems = [
 
 export function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/95 backdrop-blur-sm md:hidden">
-      <div className="flex items-center justify-around py-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/95 backdrop-blur-md md:hidden safe-area-bottom">
+      <div className="flex items-center justify-around py-1.5 px-1">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
               cn(
-                "flex flex-col items-center gap-1 px-3 py-2 text-xs transition-colors",
+                "flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] transition-all rounded-lg min-w-[56px] touch-manipulation",
                 isActive
                   ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground active:bg-muted/50"
               )
             }
           >
@@ -36,7 +36,7 @@ export function BottomNav() {
                   )}
                   strokeWidth={isActive ? 2.5 : 2}
                 />
-                <span className={cn(isActive && "font-medium")}>{item.label}</span>
+                <span className={cn("leading-tight", isActive && "font-medium")}>{item.label}</span>
               </>
             )}
           </NavLink>

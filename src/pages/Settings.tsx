@@ -77,38 +77,38 @@ export default function Settings() {
 
   return (
     <AppLayout>
-      <div className="px-4 py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
+      <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">Settings</h1>
-          <p className="text-muted-foreground">Manage your app preferences</p>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Settings</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">Manage your app preferences</p>
         </div>
 
         {/* Profile */}
         {profile && (
-          <Card className="mb-4">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <User className="h-5 w-5" />
+          <Card className="mb-3 sm:mb-4">
+            <CardHeader className="px-3 sm:px-6 pt-3 sm:pt-6 pb-2 sm:pb-4">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <User className="h-4 w-4 sm:h-5 sm:w-5" />
                 Profile
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6 space-y-3 sm:space-y-4">
               <div className="flex items-center justify-between">
-                <Label className="text-muted-foreground">Name</Label>
-                <span className="font-medium text-foreground">{profile.name}</span>
+                <Label className="text-muted-foreground text-sm">Name</Label>
+                <span className="font-medium text-foreground text-sm sm:text-base">{profile.name}</span>
               </div>
               <Separator />
               <div className="flex items-center justify-between">
-                <Label className="text-muted-foreground">Due Date</Label>
-                <span className="font-medium text-foreground">
-                  {format(new Date(profile.dueDate), "MMMM d, yyyy")}
+                <Label className="text-muted-foreground text-sm">Due Date</Label>
+                <span className="font-medium text-foreground text-sm sm:text-base">
+                  {format(new Date(profile.dueDate), "MMM d, yyyy")}
                 </span>
               </div>
               <Separator />
               <div className="flex items-center justify-between">
-                <Label className="text-muted-foreground">Started Tracking</Label>
-                <span className="font-medium text-foreground">
+                <Label className="text-muted-foreground text-sm">Started Tracking</Label>
+                <span className="font-medium text-foreground text-sm sm:text-base">
                   {format(new Date(profile.createdAt), "MMM d, yyyy")}
                 </span>
               </div>
@@ -117,43 +117,43 @@ export default function Settings() {
         )}
 
         {/* Appearance */}
-        <Card className="mb-4">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Moon className="h-5 w-5" />
+        <Card className="mb-3 sm:mb-4">
+          <CardHeader className="px-3 sm:px-6 pt-3 sm:pt-6 pb-2 sm:pb-4">
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
               Appearance
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-xs sm:text-sm">
               Choose your preferred color theme
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="flex gap-2">
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+            <div className="flex gap-1.5 sm:gap-2">
               <Button
                 variant={theme === "light" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setTheme("light")}
-                className="flex-1"
+                className="flex-1 h-9 sm:h-10 text-xs sm:text-sm touch-manipulation"
               >
-                <Sun className="h-4 w-4 mr-2" />
+                <Sun className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
                 Light
               </Button>
               <Button
                 variant={theme === "dark" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setTheme("dark")}
-                className="flex-1"
+                className="flex-1 h-9 sm:h-10 text-xs sm:text-sm touch-manipulation"
               >
-                <Moon className="h-4 w-4 mr-2" />
+                <Moon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
                 Dark
               </Button>
               <Button
                 variant={theme === "system" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setTheme("system")}
-                className="flex-1"
+                className="flex-1 h-9 sm:h-10 text-xs sm:text-sm touch-manipulation"
               >
-                <Monitor className="h-4 w-4 mr-2" />
+                <Monitor className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
                 Auto
               </Button>
             </div>
@@ -162,21 +162,21 @@ export default function Settings() {
 
         {/* Haptics */}
         {isHapticsSupported() && (
-          <Card className="mb-4">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Vibrate className="h-5 w-5" />
+          <Card className="mb-3 sm:mb-4">
+            <CardHeader className="px-3 sm:px-6 pt-3 sm:pt-6 pb-2 sm:pb-4">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <Vibrate className="h-4 w-4 sm:h-5 sm:w-5" />
                 Haptic Feedback
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-xs sm:text-sm">
                 Vibration on actions (mobile only)
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>Enable vibrations</Label>
-                  <p className="text-sm text-muted-foreground">
+            <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <Label className="text-sm">Enable vibrations</Label>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Subtle feedback on saves and actions
                   </p>
                 </div>
@@ -190,21 +190,21 @@ export default function Settings() {
         )}
 
         {/* Privacy */}
-        <Card className="mb-4">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Shield className="h-5 w-5" />
+        <Card className="mb-3 sm:mb-4">
+          <CardHeader className="px-3 sm:px-6 pt-3 sm:pt-6 pb-2 sm:pb-4">
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
               Privacy
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-xs sm:text-sm">
               Your data is stored locally on your device
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6 space-y-3 sm:space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <Label>Local Storage Only</Label>
-                <p className="text-sm text-muted-foreground">
+                <Label className="text-sm">Local Storage Only</Label>
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   All data stays on your device
                 </p>
               </div>
@@ -214,18 +214,18 @@ export default function Settings() {
         </Card>
 
         {/* Data Management */}
-        <Card className="mb-4">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Download className="h-5 w-5" />
+        <Card className="mb-3 sm:mb-4">
+          <CardHeader className="px-3 sm:px-6 pt-3 sm:pt-6 pb-2 sm:pb-4">
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <Download className="h-4 w-4 sm:h-5 sm:w-5" />
               Data Export
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-xs sm:text-sm">
               Download your data as a backup file
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Button onClick={handleExport} variant="outline" className="w-full">
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+            <Button onClick={handleExport} variant="outline" className="w-full h-10 sm:h-11 text-sm touch-manipulation">
               <Download className="h-4 w-4 mr-2" />
               Export All Data (JSON)
             </Button>
@@ -233,35 +233,35 @@ export default function Settings() {
         </Card>
 
         {/* Danger Zone */}
-        <Card className="mb-4 border-destructive/30">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg text-destructive">
-              <Trash2 className="h-5 w-5" />
+        <Card className="mb-3 sm:mb-4 border-destructive/30">
+          <CardHeader className="px-3 sm:px-6 pt-3 sm:pt-6 pb-2 sm:pb-4">
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg text-destructive">
+              <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
               Danger Zone
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-xs sm:text-sm">
               Irreversible actions - please be careful
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" className="w-full">
+                <Button variant="destructive" className="w-full h-10 sm:h-11 text-sm touch-manipulation">
                   <Trash2 className="h-4 w-4 mr-2" />
                   Clear All Data
                 </Button>
               </AlertDialogTrigger>
-              <AlertDialogContent>
+              <AlertDialogContent className="mx-4 max-w-[calc(100vw-2rem)] sm:max-w-lg">
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
+                  <AlertDialogTitle className="text-base sm:text-lg">Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription className="text-xs sm:text-sm">
                     This will permanently delete all your data including your profile,
                     daily logs, journal entries, and appointments. This action cannot
                     be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
+                  <AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={handleClearData}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
@@ -276,26 +276,26 @@ export default function Settings() {
 
         {/* About */}
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Flower2 className="h-5 w-5" />
+          <CardHeader className="px-3 sm:px-6 pt-3 sm:pt-6 pb-2 sm:pb-4">
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <Flower2 className="h-4 w-4 sm:h-5 sm:w-5" />
               About Bloom
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6 space-y-3 sm:space-y-4">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Bloom is a private pregnancy tracker designed to help you monitor
               your journey with care and confidence.
             </p>
 
-            <div className="p-4 rounded-lg bg-chart-5/10 border border-chart-5/30">
-              <div className="flex gap-3">
-                <AlertCircle className="h-5 w-5 text-chart-5 flex-shrink-0 mt-0.5" />
+            <div className="p-3 sm:p-4 rounded-lg bg-chart-5/10 border border-chart-5/30">
+              <div className="flex gap-2 sm:gap-3">
+                <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-chart-5 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-foreground text-sm mb-1">
+                  <h4 className="font-medium text-foreground text-xs sm:text-sm mb-1">
                     Medical Disclaimer
                   </h4>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-[10px] sm:text-xs text-muted-foreground">
                     This app is for informational purposes only and is not a
                     substitute for professional medical advice, diagnosis, or
                     treatment. Always seek the advice of your physician or other
@@ -306,7 +306,7 @@ export default function Settings() {
               </div>
             </div>
 
-            <p className="text-xs text-center text-muted-foreground pt-2">
+            <p className="text-[10px] sm:text-xs text-center text-muted-foreground pt-2">
               Made with 💕 for expecting parents
             </p>
           </CardContent>

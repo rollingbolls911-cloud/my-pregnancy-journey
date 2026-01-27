@@ -67,49 +67,49 @@ export function TodayCard() {
   return (
     <Card className="overflow-hidden border-none shadow-lg">
       <div className="bg-gradient-to-br from-primary/10 via-accent to-primary/5 p-1">
-        <CardContent className="bg-card rounded-[calc(var(--radius)-4px)] p-6">
+        <CardContent className="bg-card rounded-[calc(var(--radius)-4px)] p-4 sm:p-6">
           <div className="flex flex-col items-center text-center">
-            {/* Animated Progress Ring */}
+            {/* Animated Progress Ring - responsive sizing */}
             <AnimatedProgressRing 
               progress={gestationalAge.progress} 
-              size={180} 
-              strokeWidth={12}
+              size={typeof window !== 'undefined' && window.innerWidth < 375 ? 140 : 160} 
+              strokeWidth={10}
               animationDuration={1200}
             >
               <div className="text-center">
-                <span className="text-4xl font-bold text-foreground">
+                <span className="text-3xl sm:text-4xl font-bold text-foreground">
                   {gestationalAge.weeks}
                 </span>
-                <span className="text-lg text-muted-foreground ml-1">weeks</span>
-                <p className="text-sm text-muted-foreground mt-1">
+                <span className="text-base sm:text-lg text-muted-foreground ml-1">weeks</span>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
                   + {gestationalAge.days} day{gestationalAge.days !== 1 ? "s" : ""}
                 </p>
               </div>
             </AnimatedProgressRing>
 
             {/* Trimester badge */}
-            <div className="mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium animate-fade-in">
-              <Sparkles className="h-4 w-4" />
+            <div className="mt-3 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium animate-fade-in">
+              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               {gestationalAge.trimesterName}
             </div>
 
             {/* Milestone message */}
-            <p className="mt-4 text-lg text-foreground font-medium animate-fade-in">
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg text-foreground font-medium animate-fade-in px-2 leading-snug">
               {milestone}
             </p>
 
             {/* Due date info */}
-            <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="mt-3 sm:mt-4 flex items-center gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
               <div className="text-center">
-                <p className="font-semibold text-foreground">{daysRemaining}</p>
-                <p>days to go</p>
+                <p className="font-semibold text-foreground text-sm sm:text-base">{daysRemaining}</p>
+                <p className="text-[10px] sm:text-xs">days to go</p>
               </div>
-              <div className="h-8 w-px bg-border" />
+              <div className="h-6 sm:h-8 w-px bg-border" />
               <div className="text-center">
-                <p className="font-semibold text-foreground">
+                <p className="font-semibold text-foreground text-sm sm:text-base">
                   {format(new Date(profile.dueDate), "MMM d")}
                 </p>
-                <p>due date</p>
+                <p className="text-[10px] sm:text-xs">due date</p>
               </div>
             </div>
           </div>

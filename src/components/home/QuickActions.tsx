@@ -36,21 +36,21 @@ const actions = [
 
 export function QuickActions() {
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-2 sm:gap-3">
       {actions.map((action) => (
         <Link key={action.path} to={action.path}>
-          <Card className="h-full transition-all hover:shadow-md hover:scale-[1.02] active:scale-[0.98]">
-            <CardContent className="p-4">
+          <Card className="h-full transition-all hover:shadow-md active:scale-[0.98] touch-manipulation">
+            <CardContent className="p-3 sm:p-4">
               <div
                 className={cn(
-                  "h-10 w-10 rounded-lg flex items-center justify-center mb-3",
+                  "h-9 w-9 sm:h-10 sm:w-10 rounded-lg flex items-center justify-center mb-2 sm:mb-3",
                   action.color
                 )}
               >
-                <action.icon className="h-5 w-5" />
+                <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
-              <h3 className="font-medium text-foreground">{action.label}</h3>
-              <p className="text-xs text-muted-foreground">{action.description}</p>
+              <h3 className="font-medium text-foreground text-sm sm:text-base">{action.label}</h3>
+              <p className="text-[10px] sm:text-xs text-muted-foreground">{action.description}</p>
             </CardContent>
           </Card>
         </Link>

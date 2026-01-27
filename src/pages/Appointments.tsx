@@ -114,51 +114,53 @@ export default function Appointments() {
 
   return (
     <AppLayout>
-      <div className="px-4 py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
+      <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Appointments</h1>
-            <p className="text-muted-foreground">Manage your prenatal visits</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Appointments</h1>
+            <p className="text-muted-foreground text-sm sm:text-base">Manage your prenatal visits</p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={openNewAppointment}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add
+              <Button onClick={openNewAppointment} size="sm" className="h-9 sm:h-10 touch-manipulation">
+                <Plus className="h-4 w-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Add</span>
+                <span className="sm:hidden">Add</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="mx-4 max-w-[calc(100vw-2rem)] sm:max-w-[500px] max-h-[85vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle>
+                <DialogTitle className="text-base sm:text-lg">
                   {editingAppointment ? "Edit Appointment" : "New Appointment"}
                 </DialogTitle>
               </DialogHeader>
-              <div className="space-y-4 pt-4">
-                <div className="space-y-2">
-                  <Label htmlFor="apt-title">Title *</Label>
+              <div className="space-y-3 sm:space-y-4 pt-3 sm:pt-4">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="apt-title" className="text-sm">Title *</Label>
                   <Input
                     id="apt-title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="e.g., OB Checkup, Ultrasound"
+                    className="h-10 sm:h-11"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-2">
-                    <Label>Date *</Label>
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label className="text-sm">Date *</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
                           variant="outline"
                           className={cn(
-                            "w-full justify-start text-left font-normal",
+                            "w-full justify-start text-left font-normal h-10 sm:h-11 text-xs sm:text-sm",
                             !date && "text-muted-foreground"
                           )}
                         >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? format(date, "MMM d, yyyy") : "Pick date"}
+                          <CalendarIcon className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                          {date ? format(date, "MMM d") : "Pick"}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -172,49 +174,51 @@ export default function Appointments() {
                     </Popover>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="apt-time">Time</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="apt-time" className="text-sm">Time</Label>
                     <div className="relative">
-                      <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Clock className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                       <Input
                         id="apt-time"
                         type="time"
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
-                        className="pl-9"
+                        className="pl-8 sm:pl-9 h-10 sm:h-11"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="apt-provider">Provider</Label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="apt-provider" className="text-sm">Provider</Label>
                   <Input
                     id="apt-provider"
                     value={provider}
                     onChange={(e) => setProvider(e.target.value)}
                     placeholder="e.g., Dr. Smith"
+                    className="h-10 sm:h-11"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="apt-location">Location</Label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="apt-location" className="text-sm">Location</Label>
                   <Input
                     id="apt-location"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="e.g., City Hospital, Room 204"
+                    className="h-10 sm:h-11"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="apt-notes">Notes</Label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="apt-notes" className="text-sm">Notes</Label>
                   <Textarea
                     id="apt-notes"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="Questions to ask, things to remember..."
-                    className="resize-none"
+                    className="resize-none text-sm"
                     rows={3}
                   />
                 </div>
@@ -223,12 +227,12 @@ export default function Appointments() {
                   <Button
                     variant="outline"
                     onClick={() => setIsDialogOpen(false)}
-                    className="flex-1"
+                    className="flex-1 h-10 sm:h-11 touch-manipulation"
                   >
                     Cancel
                   </Button>
-                  <Button onClick={handleSave} className="flex-1">
-                    {editingAppointment ? "Update" : "Add Appointment"}
+                  <Button onClick={handleSave} className="flex-1 h-10 sm:h-11 touch-manipulation">
+                    {editingAppointment ? "Update" : "Add"}
                   </Button>
                 </div>
               </div>
@@ -239,31 +243,31 @@ export default function Appointments() {
         {/* Appointments List */}
         {appointments.length === 0 ? (
           <Card className="border-dashed">
-            <CardContent className="py-12 text-center">
-              <div className="mx-auto h-16 w-16 rounded-full bg-chart-1/10 flex items-center justify-center mb-4">
-                <CalendarCheck className="h-8 w-8 text-chart-1" />
+            <CardContent className="py-8 sm:py-12 text-center">
+              <div className="mx-auto h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-chart-1/10 flex items-center justify-center mb-3 sm:mb-4">
+                <CalendarCheck className="h-7 w-7 sm:h-8 sm:w-8 text-chart-1" />
               </div>
-              <h3 className="text-lg font-medium text-foreground mb-2">
+              <h3 className="text-base sm:text-lg font-medium text-foreground mb-2">
                 No appointments yet
               </h3>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-muted-foreground text-sm sm:text-base mb-4">
                 Keep track of your prenatal visits
               </p>
-              <Button onClick={openNewAppointment}>
+              <Button onClick={openNewAppointment} className="touch-manipulation">
                 <Plus className="h-4 w-4 mr-2" />
                 Add First Appointment
               </Button>
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Upcoming */}
             {upcomingAppointments.length > 0 && (
               <div>
-                <h2 className="text-sm font-medium text-muted-foreground mb-3">
+                <h2 className="text-xs sm:text-sm font-medium text-muted-foreground mb-2 sm:mb-3">
                   UPCOMING
                 </h2>
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {upcomingAppointments.map((apt) => (
                     <AppointmentCard
                       key={apt.id}
@@ -279,10 +283,10 @@ export default function Appointments() {
             {/* Past */}
             {pastAppointments.length > 0 && (
               <div>
-                <h2 className="text-sm font-medium text-muted-foreground mb-3">
+                <h2 className="text-xs sm:text-sm font-medium text-muted-foreground mb-2 sm:mb-3">
                   PAST
                 </h2>
-                <div className="space-y-3 opacity-60">
+                <div className="space-y-2 sm:space-y-3 opacity-60">
                   {pastAppointments.map((apt) => (
                     <AppointmentCard
                       key={apt.id}
@@ -314,39 +318,39 @@ function AppointmentCard({
 
   return (
     <Card
-      className="cursor-pointer transition-all hover:shadow-md"
+      className="cursor-pointer transition-all active:scale-[0.98] touch-manipulation"
       onClick={() => onEdit(appointment)}
     >
-      <CardContent className="p-4">
-        <div className="flex items-start gap-4">
+      <CardContent className="p-3 sm:p-4">
+        <div className="flex items-start gap-3 sm:gap-4">
           {/* Date Badge */}
-          <div className="flex-shrink-0 h-14 w-14 rounded-lg bg-primary/10 flex flex-col items-center justify-center">
-            <span className="text-xs font-medium text-primary">
+          <div className="flex-shrink-0 h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-primary/10 flex flex-col items-center justify-center">
+            <span className="text-[10px] sm:text-xs font-medium text-primary">
               {format(aptDate, "MMM")}
             </span>
-            <span className="text-xl font-bold text-primary">
+            <span className="text-lg sm:text-xl font-bold text-primary">
               {format(aptDate, "d")}
             </span>
           </div>
 
           {/* Details */}
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-foreground truncate">
+            <h3 className="font-semibold text-foreground truncate text-sm sm:text-base">
               {appointment.title}
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               {format(aptDate, "h:mm a")}
             </p>
             {appointment.provider && (
-              <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+              <p className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1 mt-0.5 sm:mt-1">
                 <User className="h-3 w-3" />
-                {appointment.provider}
+                <span className="truncate">{appointment.provider}</span>
               </p>
             )}
             {appointment.location && (
-              <p className="text-sm text-muted-foreground flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
-                {appointment.location}
+              <p className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+                <MapPin className="h-3 w-3 flex-shrink-0" />
+                <span className="truncate">{appointment.location}</span>
               </p>
             )}
           </div>
@@ -359,9 +363,9 @@ function AppointmentCard({
               e.stopPropagation();
               onDelete(appointment.id);
             }}
-            className="flex-shrink-0 text-muted-foreground hover:text-destructive"
+            className="flex-shrink-0 text-muted-foreground hover:text-destructive h-8 w-8 sm:h-9 sm:w-9 touch-manipulation"
           >
-            <Trash2 className="h-4 w-4" />
+            <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </Button>
         </div>
       </CardContent>
