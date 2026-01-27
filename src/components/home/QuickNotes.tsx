@@ -3,14 +3,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Plus, Pin, PinOff, Trash2, StickyNote } from "lucide-react";
+import { Plus, StickyNote } from "lucide-react";
 import { QuickNote, getQuickNotes, saveQuickNote, deleteQuickNote, generateId } from "@/lib/storage";
-import { cn } from "@/lib/utils";
+import { SwipeableNote } from "@/components/notes/SwipeableNote";
+import { hapticFeedback } from "@/lib/haptics";
 
 export function QuickNotes() {
   const [notes, setNotes] = useState<QuickNote[]>(() => getQuickNotes());
   const [newNote, setNewNote] = useState("");
   const [isAdding, setIsAdding] = useState(false);
+
+  const isHapticsEnabled = () => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("bloom-haptics") !== "false";
+    }
+    return true;
+  };
 
   const refreshNotes = () => {
     setNotes(getQuickNotes());
@@ -31,17 +39,29 @@ export function QuickNotes() {
     setNewNote("");
     setIsAdding(false);
     refreshNotes();
+    
+    if (isHapticsEnabled()) {
+      hapticFeedback("success");
+    }
   };
 
   const handleTogglePin = (note: QuickNote) => {
     const updated = { ...note, pinned: !note.pinned };
     saveQuickNote(updated);
     refreshNotes();
+    
+    if (isHapticsEnabled()) {
+      hapticFeedback("light");
+    }
   };
 
   const handleDelete = (id: string) => {
     deleteQuickNote(id);
     refreshNotes();
+    
+    if (isHapticsEnabled()) {
+      hapticFeedback("medium");
+    }
   };
 
   // Sort: pinned first, then by creation date (newest first)
@@ -67,10 +87,13 @@ export function QuickNotes() {
             <Plus className="h-4 w-4" />
           </Button>
         </div>
+        <p className="text-xs text-muted-foreground md:hidden">
+          Swipe left to delete
+        </p>
       </CardHeader>
       <CardContent className="pt-0">
         {isAdding && (
-          <div className="flex gap-2 mb-3">
+          <div className="flex gap-2 mb-3 animate-fade-in">
             <Input
               placeholder="Doctor question, reminder..."
               value={newNote}
@@ -93,41 +116,12 @@ export function QuickNotes() {
           <ScrollArea className="max-h-48">
             <div className="space-y-2">
               {sortedNotes.map((note) => (
-                <div
+                <SwipeableNote
                   key={note.id}
-                  className={cn(
-                    "flex items-start gap-2 p-2 rounded-lg text-sm",
-                    note.pinned
-                      ? "bg-primary/5 border border-primary/20"
-                      : "bg-muted/50"
-                  )}
-                >
-                  <p className="flex-1 text-foreground leading-relaxed">
-                    {note.content}
-                  </p>
-                  <div className="flex gap-1 flex-shrink-0">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleTogglePin(note)}
-                      className="h-7 w-7 p-0"
-                    >
-                      {note.pinned ? (
-                        <PinOff className="h-3.5 w-3.5 text-primary" />
-                      ) : (
-                        <Pin className="h-3.5 w-3.5 text-muted-foreground" />
-                      )}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(note.id)}
-                      className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
-                </div>
+                  note={note}
+                  onTogglePin={handleTogglePin}
+                  onDelete={handleDelete}
+                />
               ))}
             </div>
           </ScrollArea>
