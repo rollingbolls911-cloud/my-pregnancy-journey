@@ -140,36 +140,36 @@ export default function Tracker() {
 
   return (
     <AppLayout>
-      <div className="px-4 py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
+      <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">Daily Check-in</h1>
-          <p className="text-muted-foreground">
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Daily Check-in</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
             {format(new Date(), "EEEE, MMMM d")} · Week {gestationalAge.weeks}, Day{" "}
             {gestationalAge.days}
           </p>
         </div>
 
         {/* Mood */}
-        <Card className="mb-4">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">How are you feeling?</CardTitle>
+        <Card className="mb-3 sm:mb-4">
+          <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-base sm:text-lg">How are you feeling?</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex justify-between gap-2">
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+            <div className="flex justify-between gap-1.5 sm:gap-2">
               {MOODS.map((mood) => (
                 <button
                   key={mood.value}
                   onClick={() => handleMoodSelect(mood.value)}
                   className={cn(
-                    "flex-1 flex flex-col items-center gap-1 p-3 rounded-lg transition-all active:scale-95",
+                    "flex-1 flex flex-col items-center gap-0.5 sm:gap-1 p-2 sm:p-3 rounded-lg transition-all active:scale-95 touch-manipulation",
                     selectedMood === mood.value
                       ? "bg-primary/10 ring-2 ring-primary"
-                      : "bg-muted/50 hover:bg-muted"
+                      : "bg-muted/50 active:bg-muted"
                   )}
                 >
-                  <span className="text-2xl">{mood.emoji}</span>
-                  <span className="text-xs text-muted-foreground">{mood.label}</span>
+                  <span className="text-xl sm:text-2xl">{mood.emoji}</span>
+                  <span className="text-[10px] sm:text-xs text-muted-foreground">{mood.label}</span>
                 </button>
               ))}
             </div>
@@ -177,21 +177,21 @@ export default function Tracker() {
         </Card>
 
         {/* Energy */}
-        <Card className="mb-4">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Energy level</CardTitle>
+        <Card className="mb-3 sm:mb-4">
+          <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-base sm:text-lg">Energy level</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex gap-2">
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+            <div className="flex gap-1.5 sm:gap-2">
               {ENERGY_LEVELS.map((energy) => (
                 <button
                   key={energy.value}
                   onClick={() => handleEnergySelect(energy.value)}
                   className={cn(
-                    "flex-1 py-3 rounded-lg text-sm font-medium transition-all active:scale-95",
+                    "flex-1 py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all active:scale-95 touch-manipulation",
                     selectedEnergy === energy.value
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted/50 text-muted-foreground hover:bg-muted"
+                      : "bg-muted/50 text-muted-foreground active:bg-muted"
                   )}
                 >
                   {energy.label}
@@ -202,13 +202,13 @@ export default function Tracker() {
         </Card>
 
         {/* Symptoms */}
-        <Card className="mb-4">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Any symptoms today?</CardTitle>
-            <p className="text-sm text-muted-foreground">Tap to add, tap again to increase severity</p>
+        <Card className="mb-3 sm:mb-4">
+          <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-base sm:text-lg">Any symptoms today?</CardTitle>
+            <p className="text-xs sm:text-sm text-muted-foreground">Tap to add, tap again to increase severity</p>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-2">
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
               {SYMPTOMS.map((symptom) => {
                 const severity = getSymptomSeverity(symptom.id);
                 return (
@@ -216,26 +216,26 @@ export default function Tracker() {
                     key={symptom.id}
                     onClick={() => toggleSymptom(symptom.id)}
                     className={cn(
-                      "flex items-center gap-2 p-3 rounded-lg text-left transition-all active:scale-95",
+                      "flex items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded-lg text-left transition-all active:scale-95 touch-manipulation",
                       severity > 0
                         ? severity === 1
                           ? "bg-chart-1/20 ring-1 ring-chart-1"
                           : severity === 2
                           ? "bg-chart-4/30 ring-1 ring-chart-4"
                           : "bg-destructive/20 ring-1 ring-destructive"
-                        : "bg-muted/50 hover:bg-muted"
+                        : "bg-muted/50 active:bg-muted"
                     )}
                   >
-                    <span className="text-lg">{symptom.icon}</span>
+                    <span className="text-base sm:text-lg">{symptom.icon}</span>
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-foreground">{symptom.label}</span>
+                      <span className="text-xs sm:text-sm font-medium text-foreground">{symptom.label}</span>
                       {severity > 0 && (
-                        <div className="flex gap-0.5 mt-1">
+                        <div className="flex gap-0.5 mt-0.5 sm:mt-1">
                           {[1, 2, 3].map((level) => (
                             <div
                               key={level}
                               className={cn(
-                                "h-1.5 w-4 rounded-full",
+                                "h-1 sm:h-1.5 w-3 sm:w-4 rounded-full",
                                 level <= severity
                                   ? severity === 1
                                     ? "bg-chart-1"
@@ -257,16 +257,16 @@ export default function Tracker() {
         </Card>
 
         {/* Notes */}
-        <Card className="mb-6">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Notes (optional)</CardTitle>
+        <Card className="mb-4 sm:mb-6">
+          <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-base sm:text-lg">Notes (optional)</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
             <Textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="How was your day? Anything you want to remember?"
-              className="min-h-[100px] resize-none"
+              className="min-h-[80px] sm:min-h-[100px] resize-none text-sm sm:text-base"
             />
           </CardContent>
         </Card>
@@ -274,11 +274,11 @@ export default function Tracker() {
         {/* Save Button */}
         <Button 
           onClick={handleSave} 
-          className="w-full h-12 text-lg active:scale-95 transition-transform" 
+          className="w-full h-11 sm:h-12 text-base sm:text-lg active:scale-[0.98] transition-transform touch-manipulation" 
           size="lg"
           disabled={isSaving}
         >
-          <Sparkles className="h-5 w-5 mr-2" />
+          <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
           {isSaving ? "Saving..." : "Save Check-in"}
         </Button>
       </div>

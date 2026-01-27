@@ -141,33 +141,33 @@ export default function CalendarPage() {
 
   return (
     <AppLayout>
-      <div className="px-4 py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
+      <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">Calendar</h1>
-          <p className="text-muted-foreground">Track your pregnancy journey</p>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Calendar</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">Track your pregnancy journey</p>
         </div>
 
         {/* Week Navigation */}
-        <Card className="mb-4">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-4">
+        <Card className="mb-3 sm:mb-4">
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={goToPreviousWeek}
-                className="h-10 w-10"
+                className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
               >
-                <ChevronLeft className="h-5 w-5" />
+                <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
 
-              <div className="text-center">
-                <p className="font-semibold text-foreground">
+              <div className="text-center flex-1 px-2">
+                <p className="font-semibold text-foreground text-sm sm:text-base">
                   {format(currentWeekStart, "MMM d")} -{" "}
                   {format(endOfWeek(currentWeekStart, { weekStartsOn: 0 }), "MMM d, yyyy")}
                 </p>
                 {currentWeekGA && (
-                  <p className="text-sm text-primary font-medium">
+                  <p className="text-xs sm:text-sm text-primary font-medium">
                     Week {currentWeekGA.weeks}
                   </p>
                 )}
@@ -177,9 +177,9 @@ export default function CalendarPage() {
                 variant="ghost"
                 size="icon"
                 onClick={goToNextWeek}
-                className="h-10 w-10"
+                className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
               >
-                <ChevronRight className="h-5 w-5" />
+                <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
             </div>
 
@@ -187,7 +187,7 @@ export default function CalendarPage() {
               variant="outline"
               size="sm"
               onClick={goToToday}
-              className="w-full"
+              className="w-full h-9 sm:h-10 text-sm touch-manipulation"
             >
               Go to Today
             </Button>
@@ -196,22 +196,23 @@ export default function CalendarPage() {
 
         {/* Week Milestone */}
         {milestone && (
-          <Card className="mb-4 bg-gradient-to-r from-primary/10 to-accent">
-            <CardContent className="p-4 flex items-center gap-3">
-              <Sparkles className="h-5 w-5 text-primary flex-shrink-0" />
-              <p className="text-foreground font-medium">{milestone}</p>
+          <Card className="mb-3 sm:mb-4 bg-gradient-to-r from-primary/10 to-accent">
+            <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+              <p className="text-foreground font-medium text-sm sm:text-base">{milestone}</p>
             </CardContent>
           </Card>
         )}
 
-        {/* Week Grid */}
-        <div className="grid grid-cols-7 gap-2 mb-4">
-          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+        {/* Week Grid Header */}
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2 sm:mb-4">
+          {["S", "M", "T", "W", "T", "F", "S"].map((day, idx) => (
             <div
-              key={day}
-              className="text-center text-xs font-medium text-muted-foreground py-2"
+              key={idx}
+              className="text-center text-[10px] sm:text-xs font-medium text-muted-foreground py-1 sm:py-2"
             >
-              {day}
+              <span className="hidden sm:inline">{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][idx]}</span>
+              <span className="sm:hidden">{day}</span>
             </div>
           ))}
         </div>
@@ -220,7 +221,7 @@ export default function CalendarPage() {
         <div
           {...swipeHandlers}
           className={cn(
-            "grid grid-cols-7 gap-2 transition-all duration-150",
+            "grid grid-cols-7 gap-1 sm:gap-2 transition-all duration-150",
             isTransitioning && transitionDirection === "left" && "translate-x-[-20px] opacity-50",
             isTransitioning && transitionDirection === "right" && "translate-x-[20px] opacity-50"
           )}
@@ -243,17 +244,17 @@ export default function CalendarPage() {
                   if (isHapticsEnabled()) hapticFeedback("light");
                 }}
                 className={cn(
-                  "transition-all cursor-pointer hover:scale-105 active:scale-95",
+                  "transition-all cursor-pointer active:scale-95 touch-manipulation",
                   isCurrentDay && "ring-2 ring-primary",
                   isDueDate && "ring-2 ring-chart-1 bg-chart-1/10",
                   log && "bg-primary/5",
                   isSelected && !isCurrentDay && !isDueDate && "ring-2 ring-secondary"
                 )}
               >
-                <CardContent className="p-2 text-center">
+                <CardContent className="p-1.5 sm:p-2 text-center">
                   <p
                     className={cn(
-                      "text-lg font-semibold",
+                      "text-base sm:text-lg font-semibold",
                       isCurrentDay && "text-primary",
                       isFuture && !isDueDate && "text-muted-foreground",
                       isDueDate && "text-chart-1"
@@ -262,21 +263,21 @@ export default function CalendarPage() {
                     {format(day, "d")}
                   </p>
                   {dayGA && dayGA.weeks > 0 && (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-[9px] sm:text-xs text-muted-foreground">
                       W{dayGA.weeks}D{dayGA.days}
                     </p>
                   )}
                   {log && (
-                    <div className="mt-1 flex justify-center gap-0.5">
+                    <div className="mt-0.5 sm:mt-1 flex justify-center gap-0.5">
                       {log.mood && (
-                        <span className="text-xs">
+                        <span className="text-[10px] sm:text-xs">
                           {log.mood.value >= 4 ? "😊" : log.mood.value >= 3 ? "😐" : "😔"}
                         </span>
                       )}
                     </div>
                   )}
                   {isDueDate && (
-                    <p className="text-xs font-medium text-chart-1">EDD</p>
+                    <p className="text-[9px] sm:text-xs font-medium text-chart-1">EDD</p>
                   )}
                 </CardContent>
               </Card>
@@ -287,11 +288,11 @@ export default function CalendarPage() {
         {/* Selected Day Details */}
         {selectedDate && (
           <Card 
-            className="mt-4 animate-fade-in"
+            className="mt-3 sm:mt-4 animate-fade-in"
             {...daySwipeHandlers}
           >
-            <CardContent className="p-4">
-              <h3 className="font-semibold text-foreground mb-2">
+            <CardContent className="p-3 sm:p-4">
+              <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
                 {format(selectedDate, "EEEE, MMMM d")}
               </h3>
               {(() => {
@@ -299,7 +300,7 @@ export default function CalendarPage() {
                 const dayGA = getGestationalAgeForDate(selectedDate);
                 
                 return (
-                  <div className="space-y-2 text-sm">
+                  <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                     {dayGA && (
                       <p className="text-muted-foreground">
                         Week {dayGA.weeks}, Day {dayGA.days}
@@ -333,7 +334,7 @@ export default function CalendarPage() {
                         No log for this day
                       </p>
                     )}
-                    <p className="text-xs text-muted-foreground mt-2">
+                    <p className="text-[10px] sm:text-xs text-muted-foreground mt-2">
                       Swipe left/right to change day
                     </p>
                   </div>
@@ -344,17 +345,17 @@ export default function CalendarPage() {
         )}
 
         {/* Legend */}
-        <div className="mt-6 flex flex-wrap gap-4 justify-center text-sm">
-          <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded ring-2 ring-primary" />
+        <div className="mt-4 sm:mt-6 flex flex-wrap gap-3 sm:gap-4 justify-center text-xs sm:text-sm">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="h-3 w-3 sm:h-4 sm:w-4 rounded ring-2 ring-primary" />
             <span className="text-muted-foreground">Today</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded bg-primary/5" />
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="h-3 w-3 sm:h-4 sm:w-4 rounded bg-primary/5" />
             <span className="text-muted-foreground">Logged</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded ring-2 ring-chart-1 bg-chart-1/10" />
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="h-3 w-3 sm:h-4 sm:w-4 rounded ring-2 ring-chart-1 bg-chart-1/10" />
             <span className="text-muted-foreground">Due Date</span>
           </div>
         </div>

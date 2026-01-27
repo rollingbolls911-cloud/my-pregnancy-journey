@@ -59,39 +59,39 @@ function HomePage() {
 
   return (
     <AppLayout>
-      <div className="px-4 py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
+      <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <p className="text-muted-foreground">Hello, {profile?.name} 💕</p>
-          <h1 className="text-2xl font-bold text-foreground">
+        <div className="mb-4 sm:mb-6">
+          <p className="text-muted-foreground text-sm sm:text-base">Hello, {profile?.name} 💕</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">
             {gestationalAge ? `Week ${gestationalAge.weeks}` : "Your Journey"}
           </h1>
         </div>
 
         {/* Today Card */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <TodayCard />
         </div>
 
         {/* Quick Actions */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-foreground mb-3">Quick Actions</h2>
+        <div className="mb-4 sm:mb-6">
+          <h2 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Quick Actions</h2>
           <QuickActions />
         </div>
 
         {/* Quick Notes */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <QuickNotes />
         </div>
 
         {/* Upcoming Appointment */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-foreground mb-3">Next Appointment</h2>
+        <div className="mb-4 sm:mb-6">
+          <h2 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Next Appointment</h2>
           <UpcomingAppointment />
         </div>
 
         {/* Guidance Preview */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <GuidancePreview />
         </div>
       </div>
