@@ -201,14 +201,20 @@ export default function Tracker() {
                     <span className="text-lg">{symptom.icon}</span>
                     <div className="flex-1 min-w-0">
                       <span className="text-sm font-medium text-foreground">{symptom.label}</span>
-                      {severity > 0 && (
+                        {severity > 0 && (
                         <div className="flex gap-0.5 mt-1">
                           {[1, 2, 3].map((level) => (
                             <div
                               key={level}
                               className={cn(
                                 "h-1.5 w-4 rounded-full",
-                                level <= severity ? "bg-current opacity-100" : "bg-muted"
+                                level <= severity
+                                  ? severity === 1
+                                    ? "bg-chart-1"
+                                    : severity === 2
+                                    ? "bg-chart-4"
+                                    : "bg-destructive"
+                                  : "bg-muted"
                               )}
                             />
                           ))}
