@@ -6,9 +6,7 @@ import {
   getDaysRemaining,
   GestationalAge,
 } from "@/lib/pregnancy";
-import { useAuth } from "@/contexts/AuthContext";
-import { useCloudProfile, useSaveCloudProfile } from "@/hooks/useCloudStorage";
-import { getProfile as getLocalProfile, saveProfile as saveLocalProfile, clearProfile as clearLocalProfile, generateId } from "@/lib/storage";
+import { getProfile, saveProfile, clearProfile, generateId } from "@/lib/storage";
 
 interface PregnancyContextType {
   profile: PregnancyProfile | null;
@@ -24,48 +22,19 @@ interface PregnancyContextType {
 const PregnancyContext = createContext<PregnancyContextType | undefined>(undefined);
 
 export function PregnancyProvider({ children }: { children: ReactNode }) {
-  const { user } = useAuth();
-  const { data: cloudProfile, isLoading: cloudLoading } = useCloudProfile();
-  const saveCloudProfile = useSaveCloudProfile();
-  
   const [profile, setProfile] = useState<PregnancyProfile | null>(null);
   const [gestationalAge, setGestationalAge] = useState<GestationalAge | null>(null);
   const [daysRemaining, setDaysRemaining] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load profile - prioritize cloud if authenticated
+  // Load profile on mount
   useEffect(() => {
-    if (user && cloudProfile) {
-      // Convert cloud profile to local format
-      const lmpDate = new Date(cloudProfile.due_date);
-      lmpDate.setDate(lmpDate.getDate() - 280);
-      
-      const localProfile: PregnancyProfile = {
-        id: cloudProfile.id,
-        name: cloudProfile.name,
-        lmpDate: lmpDate.toISOString(),
-        dueDate: cloudProfile.due_date,
-        createdAt: cloudProfile.created_at,
-      };
-      setProfile(localProfile);
-    } else if (user && !cloudLoading && !cloudProfile) {
-      // Check for local profile to migrate
-      const localProfile = getLocalProfile();
-      if (localProfile) {
-        setProfile(localProfile);
-        // Migrate to cloud
-        saveCloudProfile.mutate({
-          name: localProfile.name,
-          due_date: localProfile.dueDate.split('T')[0],
-        });
-      }
-    } else if (!user) {
-      // Not authenticated, use local storage
-      const savedProfile = getLocalProfile();
-      if (savedProfile) {
-        setProfile(savedProfile);
-      }
+    const savedProfile = getProfile();
+    if (savedProfile) {
+      setProfile(savedProfile);
     }
-  }, [user, cloudProfile, cloudLoading]);
+    setIsLoading(false);
+  }, []);
 
   // Calculate gestational age when profile changes
   useEffect(() => {
@@ -86,17 +55,7 @@ export function PregnancyProvider({ children }: { children: ReactNode }) {
       dueDate: dueDate.toISOString(),
       createdAt: new Date().toISOString(),
     };
-    
-    if (user) {
-      // Save to cloud
-      saveCloudProfile.mutate({
-        name,
-        due_date: dueDate.toISOString().split('T')[0],
-      });
-    } else {
-      // Save locally
-      saveLocalProfile(newProfile);
-    }
+    saveProfile(newProfile);
     setProfile(newProfile);
   };
 
@@ -111,22 +70,12 @@ export function PregnancyProvider({ children }: { children: ReactNode }) {
       dueDate: dueDate.toISOString(),
       createdAt: new Date().toISOString(),
     };
-    
-    if (user) {
-      // Save to cloud
-      saveCloudProfile.mutate({
-        name,
-        due_date: dueDate.toISOString().split('T')[0],
-      });
-    } else {
-      // Save locally
-      saveLocalProfile(newProfile);
-    }
+    saveProfile(newProfile);
     setProfile(newProfile);
   };
 
   const resetProfile = () => {
-    clearLocalProfile();
+    clearProfile();
     setProfile(null);
     setGestationalAge(null);
     setDaysRemaining(0);
@@ -139,7 +88,7 @@ export function PregnancyProvider({ children }: { children: ReactNode }) {
         gestationalAge,
         daysRemaining,
         isSetupComplete: !!profile,
-        isLoading: cloudLoading,
+        isLoading,
         setupProfile,
         setupProfileWithDueDate,
         resetProfile,
