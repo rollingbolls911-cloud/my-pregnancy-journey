@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MemoryTimeline } from "@/components/journal/MemoryTimeline";
 import {
   Dialog,
   DialogContent,
@@ -21,7 +23,7 @@ import {
   generateId,
 } from "@/lib/storage";
 import { format } from "date-fns";
-import { Plus, BookHeart, Trash2 } from "lucide-react";
+import { Plus, BookHeart, Trash2, Heart, PenLine } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Journal() {
@@ -99,9 +101,9 @@ export default function Journal() {
             </div>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button onClick={openNewEntry}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  New Entry
+                <Button onClick={openNewEntry} size="sm">
+                  <Plus className="h-4 w-4 mr-1" />
+                  New
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[500px]">
@@ -148,66 +150,87 @@ export default function Journal() {
           </div>
         </AnimatedSection>
 
-        {/* Entries List */}
-        {entries.length === 0 ? (
-          <AnimatedSection delay={100}>
-            <Card className="border-dashed">
-              <CardContent className="py-12 text-center">
-                <div className="mx-auto h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                  <BookHeart className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-lg font-medium text-foreground mb-2">
-                  No journal entries yet
-                </h3>
-                <p className="text-muted-foreground mb-4">
-                  Start documenting your pregnancy journey
-                </p>
-                <Button onClick={openNewEntry}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Write Your First Entry
-                </Button>
-              </CardContent>
-            </Card>
-          </AnimatedSection>
-        ) : (
-          <div className="space-y-3">
-            {entries.map((entry, index) => (
-              <AnimatedSection key={entry.id} delay={100 + index * 50}>
-                <Card
-                  className="cursor-pointer transition-all hover:shadow-md"
-                  onClick={() => handleEdit(entry)}
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs text-muted-foreground mb-1">
-                          {format(new Date(entry.createdAt), "MMMM d, yyyy 'at' h:mm a")}
-                        </p>
-                        <h3 className="font-semibold text-foreground mb-1 truncate">
-                          {entry.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground line-clamp-2">
-                          {entry.content}
-                        </p>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDelete(entry.id);
-                        }}
-                        className="flex-shrink-0 text-muted-foreground hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+        {/* Tabs for Memories and Journal */}
+        <AnimatedSection delay={100}>
+          <Tabs defaultValue="memories" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="memories" className="flex items-center gap-2">
+                <Heart className="h-4 w-4" />
+                Memories
+              </TabsTrigger>
+              <TabsTrigger value="journal" className="flex items-center gap-2">
+                <PenLine className="h-4 w-4" />
+                Journal
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Memory Timeline Tab */}
+            <TabsContent value="memories" className="mt-0">
+              <MemoryTimeline />
+            </TabsContent>
+
+            {/* Journal Entries Tab */}
+            <TabsContent value="journal" className="mt-0">
+              {entries.length === 0 ? (
+                <Card className="border-dashed">
+                  <CardContent className="py-12 text-center">
+                    <div className="mx-auto h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                      <BookHeart className="h-8 w-8 text-primary" />
                     </div>
+                    <h3 className="text-lg font-medium text-foreground mb-2">
+                      No journal entries yet
+                    </h3>
+                    <p className="text-muted-foreground mb-4">
+                      Start documenting your pregnancy journey
+                    </p>
+                    <Button onClick={openNewEntry}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Write Your First Entry
+                    </Button>
                   </CardContent>
                 </Card>
-              </AnimatedSection>
-            ))}
-          </div>
-        )}
+              ) : (
+                <div className="space-y-3">
+                  {entries.map((entry, index) => (
+                    <AnimatedSection key={entry.id} delay={index * 50}>
+                      <Card
+                        className="cursor-pointer transition-all hover:shadow-md"
+                        onClick={() => handleEdit(entry)}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs text-muted-foreground mb-1">
+                                {format(new Date(entry.createdAt), "MMMM d, yyyy 'at' h:mm a")}
+                              </p>
+                              <h3 className="font-semibold text-foreground mb-1 truncate">
+                                {entry.title}
+                              </h3>
+                              <p className="text-sm text-muted-foreground line-clamp-2">
+                                {entry.content}
+                              </p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(entry.id);
+                              }}
+                              className="flex-shrink-0 text-muted-foreground hover:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </AnimatedSection>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
+        </AnimatedSection>
       </div>
     </AppLayout>
   );
