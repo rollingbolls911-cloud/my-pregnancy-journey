@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { hapticFeedback } from "@/lib/haptics";
 import { celebrate } from "@/lib/celebrations";
 import { useNavigate } from "react-router-dom";
+import { TrackerCalendar } from "@/components/tracker/TrackerCalendar";
 
 export default function Tracker() {
   const { gestationalAge, profile } = usePregnancy();
@@ -217,6 +218,11 @@ export default function Tracker() {
               </div>
             )}
           </div>
+        </AnimatedSection>
+
+        {/* Calendar */}
+        <AnimatedSection delay={50}>
+          <TrackerCalendar />
         </AnimatedSection>
 
         {/* Mood */}

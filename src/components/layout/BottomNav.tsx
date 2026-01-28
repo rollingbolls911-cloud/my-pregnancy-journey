@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { Home, Calendar, Activity, BookHeart, Camera } from "lucide-react";
+import { Home, Activity, BookHeart, Camera, ListTodo } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { path: "/", icon: Home, label: "Home" },
-  { path: "/calendar", icon: Calendar, label: "Calendar" },
+  { path: "/home", icon: Home, label: "Home" },
+  { path: "/tasks", icon: ListTodo, label: "Tasks" },
   { path: "/tracker", icon: Activity, label: "Tracker" },
   { path: "/photos", icon: Camera, label: "Photos" },
   { path: "/journal", icon: BookHeart, label: "Journal" },
