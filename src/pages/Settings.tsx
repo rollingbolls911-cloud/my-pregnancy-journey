@@ -35,6 +35,7 @@ import { toast } from "sonner";
 import { useTheme } from "next-themes";
 import { isHapticsSupported } from "@/lib/haptics";
 import { ComfortPreferencesSettings } from "@/components/settings/ComfortPreferencesSettings";
+import { NotificationSettings } from "@/components/settings/NotificationSettings";
 
 export default function Settings() {
   const { profile, resetProfile } = usePregnancy();
@@ -188,6 +189,9 @@ export default function Settings() {
             </CardContent>
           </Card>
         )}
+
+        {/* Notifications */}
+        <NotificationSettings />
 
         {/* Comfort Preferences */}
         <div className="mb-3 sm:mb-4">
