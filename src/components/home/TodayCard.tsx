@@ -3,8 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedProgressRing } from "./AnimatedProgressRing";
 import { usePregnancy } from "@/contexts/PregnancyContext";
 import { getWeekMilestone, formatGestationalAge } from "@/lib/pregnancy";
+import { getWeeklyAffirmation } from "@/lib/greetings";
 import { format } from "date-fns";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Heart } from "lucide-react";
 import { shouldCelebrate, celebrateMilestone, celebrate } from "@/lib/celebrations";
 import { hapticFeedback } from "@/lib/haptics";
 import { toast } from "sonner";
@@ -63,6 +64,7 @@ export function TodayCard() {
   if (!gestationalAge || !profile) return null;
 
   const milestone = getWeekMilestone(gestationalAge.weeks);
+  const affirmation = getWeeklyAffirmation(gestationalAge.weeks);
 
   return (
     <Card className="overflow-hidden border-border/30 shadow-xl">
@@ -93,8 +95,14 @@ export function TodayCard() {
               {gestationalAge.trimesterName}
             </div>
 
+            {/* Weekly affirmation */}
+            <div className="mt-3 sm:mt-4 flex items-center gap-2 text-sm text-primary/80">
+              <Heart className="h-3.5 w-3.5" />
+              <span className="italic">{affirmation}</span>
+            </div>
+
             {/* Milestone message */}
-            <p className="mt-4 sm:mt-5 text-base sm:text-lg text-foreground font-medium animate-fade-in px-2 leading-relaxed">
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg text-foreground font-medium animate-fade-in px-2 leading-relaxed">
               {milestone}
             </p>
 

@@ -25,7 +25,7 @@ import {
   Trash2,
   Shield,
   AlertCircle,
-  Flower2,
+  Heart,
   Moon,
   Sun,
   Monitor,
@@ -34,6 +34,7 @@ import {
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
 import { isHapticsSupported } from "@/lib/haptics";
+import { ComfortPreferencesSettings } from "@/components/settings/ComfortPreferencesSettings";
 
 export default function Settings() {
   const { profile, resetProfile } = usePregnancy();
@@ -188,15 +189,20 @@ export default function Settings() {
           </Card>
         )}
 
+        {/* Comfort Preferences */}
+        <div className="mb-3 sm:mb-4">
+          <ComfortPreferencesSettings />
+        </div>
+
         {/* Privacy */}
         <Card className="mb-3 sm:mb-4">
           <CardHeader className="px-3 sm:px-6 pt-3 sm:pt-6 pb-2 sm:pb-4">
             <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
               <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
-              Privacy
+              Privacy & Safety
             </CardTitle>
             <CardDescription className="text-xs sm:text-sm">
-              Your data is stored locally on your device
+              Your data stays private, always 💕
             </CardDescription>
           </CardHeader>
           <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6 space-y-3 sm:space-y-4">
@@ -204,7 +210,7 @@ export default function Settings() {
               <div>
                 <Label className="text-sm">Local Storage Only</Label>
                 <p className="text-xs sm:text-sm text-muted-foreground">
-                  All data stays on your device
+                  Everything stays on your device
                 </p>
               </div>
               <Switch checked disabled />
@@ -277,14 +283,13 @@ export default function Settings() {
         <Card>
           <CardHeader className="px-3 sm:px-6 pt-3 sm:pt-6 pb-2 sm:pb-4">
             <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-              <Flower2 className="h-4 w-4 sm:h-5 sm:w-5" />
+              <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
               About Bloom
             </CardTitle>
           </CardHeader>
           <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6 space-y-3 sm:space-y-4">
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Bloom is a private pregnancy tracker designed to help you monitor
-              your journey with care and confidence.
+              Bloom is your personal care companion—designed just for you, with love and privacy at its heart.
             </p>
 
             <div className="p-3 sm:p-4 rounded-lg bg-chart-5/10 border border-chart-5/30">
@@ -292,21 +297,19 @@ export default function Settings() {
                 <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-chart-5 flex-shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-medium text-foreground text-xs sm:text-sm mb-1">
-                    Medical Disclaimer
+                    A Gentle Reminder
                   </h4>
                   <p className="text-[10px] sm:text-xs text-muted-foreground">
-                    This app is for informational purposes only and is not a
-                    substitute for professional medical advice, diagnosis, or
-                    treatment. Always seek the advice of your physician or other
-                    qualified health provider with any questions you may have
-                    regarding a medical condition.
+                    This app offers guidance and support, not medical advice. Please always 
+                    reach out to your doctor or healthcare provider for any health concerns. 
+                    Your wellbeing matters most 💕
                   </p>
                 </div>
               </div>
             </div>
 
             <p className="text-[10px] sm:text-xs text-center text-muted-foreground pt-2">
-              Made with 💕 for expecting parents
+              Made with love, for you 💕
             </p>
           </CardContent>
         </Card>

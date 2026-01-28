@@ -36,10 +36,10 @@ export default function Welcome() {
           Bloom
         </h1>
         <p className="text-lg text-muted-foreground mb-2">
-          Your pregnancy companion
+          Your care companion 💕
         </p>
         <p className="text-sm text-muted-foreground/70 mb-10 max-w-xs leading-relaxed">
-          Track your journey with care, privacy, and peace of mind
+          A safe, private space for your pregnancy journey—just for you
         </p>
 
         {/* Enter button */}
@@ -49,12 +49,12 @@ export default function Welcome() {
           className="h-14 px-14 text-lg rounded-full shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105 active:scale-95"
         >
           <Flower2 className="h-5 w-5 mr-2" />
-          Enter
+          Begin
         </Button>
 
         {/* Privacy note */}
         <p className="text-xs text-muted-foreground/50 mt-10 max-w-xs">
-          Your data stays private on your device
+          Everything stays private, always 🔒
         </p>
       </div>
     </div>
