@@ -14,7 +14,168 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      appointments: {
+        Row: {
+          created_at: string
+          datetime: string
+          id: string
+          location: string | null
+          notes: string | null
+          provider: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          datetime: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          provider?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          datetime?: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          provider?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      daily_logs: {
+        Row: {
+          created_at: string
+          date: string
+          energy_label: string | null
+          energy_value: number | null
+          id: string
+          mood_label: string | null
+          mood_value: number | null
+          notes: string | null
+          symptoms: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          energy_label?: string | null
+          energy_value?: number | null
+          id?: string
+          mood_label?: string | null
+          mood_value?: number | null
+          notes?: string | null
+          symptoms?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          energy_label?: string | null
+          energy_value?: number | null
+          id?: string
+          mood_label?: string | null
+          mood_value?: number | null
+          notes?: string | null
+          symptoms?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      journal_entries: {
+        Row: {
+          content: string | null
+          created_at: string
+          date: string
+          id: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          date: string
+          id?: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          date?: string
+          id?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          due_date: string
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          due_date: string
+          id?: string
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          due_date?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      quick_notes: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          pinned: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          pinned?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          pinned?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
