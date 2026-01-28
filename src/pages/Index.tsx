@@ -6,6 +6,7 @@ import { PersonalizedGreeting } from "@/components/home/PersonalizedGreeting";
 import { ComfortSuggestions } from "@/components/home/ComfortSuggestions";
 import { MemoryCard } from "@/components/home/MemoryCard";
 import { WeeklyRecapCard } from "@/components/home/WeeklyRecapCard";
+import { DailyDuaCard } from "@/components/home/DailyDuaCard";
 import { ProfileSetup } from "@/components/setup/ProfileSetup";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { usePregnancy } from "@/contexts/PregnancyContext";
@@ -91,6 +92,13 @@ function HomePage() {
         <AnimatedSection delay={300} direction="up">
           <div className="mb-5 sm:mb-6">
             <ComfortSuggestions />
+          </div>
+        </AnimatedSection>
+
+        {/* Daily Dua Card */}
+        <AnimatedSection delay={350} direction="up">
+          <div className="mb-5 sm:mb-6">
+            <DailyDuaCard />
           </div>
         </AnimatedSection>
 
