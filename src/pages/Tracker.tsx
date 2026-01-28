@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { usePregnancy } from "@/contexts/PregnancyContext";
-import { MOODS, SYMPTOMS, ENERGY_LEVELS } from "@/lib/pregnancy";
+import { SYMPTOMS } from "@/lib/pregnancy";
+import { defaultMoodOptions, defaultEnergyOptions } from "@/lib/comfort";
 import {
   saveDailyLog,
   getDailyLogByDate,
@@ -13,13 +14,15 @@ import {
 } from "@/lib/storage";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { Sparkles } from "lucide-react";
+import { Sparkles, SkipForward } from "lucide-react";
 import { toast } from "sonner";
 import { hapticFeedback } from "@/lib/haptics";
 import { celebrate } from "@/lib/celebrations";
+import { useNavigate } from "react-router-dom";
 
 export default function Tracker() {
-  const { gestationalAge } = usePregnancy();
+  const { gestationalAge, profile } = usePregnancy();
+  const navigate = useNavigate();
   const today = format(new Date(), "yyyy-MM-dd");
 
   const [selectedMood, setSelectedMood] = useState<number | null>(null);
@@ -83,14 +86,14 @@ export default function Tracker() {
     if (isHapticsEnabled()) hapticFeedback("light");
   };
 
-  const handleSave = () => {
+  const handleSave = (partial: boolean = false) => {
     setIsSaving(true);
     
     const moodData = selectedMood
-      ? MOODS.find((m) => m.value === selectedMood)
+      ? defaultMoodOptions.find((m) => m.value === selectedMood)
       : undefined;
     const energyData = selectedEnergy
-      ? ENERGY_LEVELS.find((e) => e.value === selectedEnergy)
+      ? defaultEnergyOptions.find((e) => e.value === selectedEnergy)
       : undefined;
 
     const log: DailyLog = {
@@ -112,11 +115,23 @@ export default function Tracker() {
     if (isHapticsEnabled()) hapticFeedback("success");
     celebrate("small");
     
-    toast.success("Check-in saved!", {
-      description: "Your daily log has been recorded.",
+    const messages = partial 
+      ? ["Saved what you have 💕", "That's enough for now ✨", "Partial save done 🌸"]
+      : ["You're all checked in 💕", "Beautifully done ✨", "Logged with love 🌸"];
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    
+    toast.success(randomMessage, {
+      description: "You did enough today.",
     });
     
     setIsSaving(false);
+    navigate("/home");
+  };
+
+  const handleSkip = () => {
+    if (isHapticsEnabled()) hapticFeedback("light");
+    toast("It's okay to skip today 💕", { duration: 2000 });
+    navigate("/home");
   };
 
   if (!gestationalAge) {
@@ -142,14 +157,24 @@ export default function Tracker() {
   return (
     <AppLayout>
       <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
-        {/* Header */}
+        {/* Header with Skip option */}
         <AnimatedSection delay={0}>
-          <div className="mb-4 sm:mb-6">
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Daily Check-in</h1>
-            <p className="text-muted-foreground text-sm sm:text-base">
-              {format(new Date(), "EEEE, MMMM d")} · Week {gestationalAge.weeks}, Day{" "}
-              {gestationalAge.days}
-            </p>
+          <div className="mb-4 sm:mb-6 flex justify-between items-start">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">How are you, {profile?.name}?</h1>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                {format(new Date(), "EEEE, MMMM d")}
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSkip}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <SkipForward className="h-4 w-4 mr-1" />
+              Skip
+            </Button>
           </div>
         </AnimatedSection>
 
@@ -161,7 +186,7 @@ export default function Tracker() {
             </CardHeader>
             <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
               <div className="flex justify-between gap-1.5 sm:gap-2">
-                {MOODS.map((mood) => (
+                {defaultMoodOptions.map((mood) => (
                   <button
                     key={mood.value}
                     onClick={() => handleMoodSelect(mood.value)}
@@ -189,7 +214,7 @@ export default function Tracker() {
             </CardHeader>
             <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
               <div className="flex gap-1.5 sm:gap-2">
-                {ENERGY_LEVELS.map((energy) => (
+                {defaultEnergyOptions.map((energy) => (
                   <button
                     key={energy.value}
                     onClick={() => handleEnergySelect(energy.value)}
@@ -282,17 +307,29 @@ export default function Tracker() {
           </Card>
         </AnimatedSection>
 
-        {/* Save Button */}
+        {/* Save Buttons */}
         <AnimatedSection delay={500}>
-          <Button 
-            onClick={handleSave} 
-            className="w-full h-11 sm:h-12 text-base sm:text-lg active:scale-[0.98] transition-transform touch-manipulation" 
-            size="lg"
-            disabled={isSaving}
-          >
-            <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-            {isSaving ? "Saving..." : "Save Check-in"}
-          </Button>
+          <div className="space-y-2">
+            <Button 
+              onClick={() => handleSave(false)} 
+              className="w-full h-11 sm:h-12 text-base sm:text-lg active:scale-[0.98] transition-transform touch-manipulation" 
+              size="lg"
+              disabled={isSaving}
+            >
+              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+              {isSaving ? "Saving..." : "Save Check-in"}
+            </Button>
+            {(selectedMood || selectedEnergy || selectedSymptoms.length > 0 || notes) && (
+              <Button
+                variant="ghost"
+                onClick={() => handleSave(true)}
+                className="w-full text-muted-foreground"
+                disabled={isSaving}
+              >
+                Save partial & continue later
+              </Button>
+            )}
+          </div>
         </AnimatedSection>
       </div>
     </AppLayout>

@@ -2,7 +2,8 @@ import { TodayCard } from "@/components/home/TodayCard";
 import { QuickActions } from "@/components/home/QuickActions";
 import { GuidancePreview } from "@/components/home/GuidancePreview";
 import { QuickNotes } from "@/components/home/QuickNotes";
-import { ProfileCard } from "@/components/home/ProfileCard";
+import { PersonalizedGreeting } from "@/components/home/PersonalizedGreeting";
+import { ComfortSuggestions } from "@/components/home/ComfortSuggestions";
 import { ProfileSetup } from "@/components/setup/ProfileSetup";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { usePregnancy } from "@/contexts/PregnancyContext";
@@ -62,10 +63,10 @@ function HomePage() {
   return (
     <AppLayout>
       <div className="px-4 py-5 sm:px-5 sm:py-7 md:px-8 md:py-8 max-w-2xl mx-auto">
-        {/* Profile Card */}
+        {/* Personalized Greeting */}
         <AnimatedSection delay={0} direction="up">
           <div className="mb-5 sm:mb-6">
-            <ProfileCard />
+            <PersonalizedGreeting />
           </div>
         </AnimatedSection>
 
@@ -84,15 +85,22 @@ function HomePage() {
           </div>
         </AnimatedSection>
 
-        {/* Quick Notes */}
+        {/* Comfort Suggestions */}
         <AnimatedSection delay={300} direction="up">
+          <div className="mb-5 sm:mb-6">
+            <ComfortSuggestions />
+          </div>
+        </AnimatedSection>
+
+        {/* Quick Notes */}
+        <AnimatedSection delay={350} direction="up">
           <div className="mb-5 sm:mb-6">
             <QuickNotes />
           </div>
         </AnimatedSection>
 
         {/* Upcoming Appointment */}
-        <AnimatedSection delay={400} direction="up">
+        <AnimatedSection delay={450} direction="up">
           <div className="mb-5 sm:mb-6">
             <h2 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Next Appointment</h2>
             <UpcomingAppointment />
@@ -100,7 +108,7 @@ function HomePage() {
         </AnimatedSection>
 
         {/* Guidance Preview */}
-        <AnimatedSection delay={500} direction="up">
+        <AnimatedSection delay={550} direction="up">
           <div className="mb-5 sm:mb-6">
             <GuidancePreview />
           </div>
