@@ -44,50 +44,6 @@ export function ProfileCard({ className }: ProfileCardProps) {
           </div>
         </div>
 
-        {/* Progress section */}
-        <div className="mt-5">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-muted-foreground">Pregnancy Progress</span>
-            <span className="text-sm font-semibold text-primary">
-              {weeksComplete} / {totalWeeks} weeks
-            </span>
-          </div>
-          
-          {/* Custom styled progress bar */}
-          <div className="relative">
-            <div className="h-3 w-full rounded-full bg-accent/60 overflow-hidden">
-              <div 
-                className="h-full rounded-full bg-gradient-to-r from-primary via-chart-1 to-chart-2 transition-all duration-500 shadow-sm"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-            
-            {/* Progress markers */}
-            <div className="flex justify-between mt-2 px-0.5">
-              <span className="text-[10px] text-muted-foreground">1st</span>
-              <span className="text-[10px] text-muted-foreground">2nd</span>
-              <span className="text-[10px] text-muted-foreground">3rd</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick stats */}
-        <div className="mt-4 flex items-center justify-between bg-accent/40 rounded-xl p-3">
-          <div className="text-center flex-1">
-            <p className="text-xs text-muted-foreground">Week</p>
-            <p className="font-bold text-foreground">{gestationalAge.weeks}</p>
-          </div>
-          <div className="h-8 w-px bg-border/50" />
-          <div className="text-center flex-1">
-            <p className="text-xs text-muted-foreground">Day</p>
-            <p className="font-bold text-foreground">{gestationalAge.days}</p>
-          </div>
-          <div className="h-8 w-px bg-border/50" />
-          <div className="text-center flex-1">
-            <p className="text-xs text-muted-foreground">Progress</p>
-            <p className="font-bold text-primary">{Math.round(progressPercent)}%</p>
-          </div>
-        </div>
       </CardContent>
     </Card>
   );
