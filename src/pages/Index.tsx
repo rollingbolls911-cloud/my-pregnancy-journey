@@ -3,7 +3,6 @@ import { QuickActions } from "@/components/home/QuickActions";
 import { GuidancePreview } from "@/components/home/GuidancePreview";
 import { QuickNotes } from "@/components/home/QuickNotes";
 import { ProfileCard } from "@/components/home/ProfileCard";
-import { BabySizeCard } from "@/components/home/BabySizeCard";
 import { ProfileSetup } from "@/components/setup/ProfileSetup";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { usePregnancy } from "@/contexts/PregnancyContext";
@@ -74,13 +73,6 @@ function HomePage() {
         <AnimatedSection delay={100} direction="up">
           <div className="mb-5 sm:mb-6">
             <TodayCard />
-          </div>
-        </AnimatedSection>
-
-        {/* Baby Size Card */}
-        <AnimatedSection delay={150} direction="up">
-          <div className="mb-5 sm:mb-6">
-            <BabySizeCard />
           </div>
         </AnimatedSection>
 
