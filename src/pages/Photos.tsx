@@ -4,6 +4,7 @@ import { PhotoGrid } from "@/components/photos/PhotoGrid";
 import { PhotoUpload } from "@/components/photos/PhotoUpload";
 import { PhotoViewer } from "@/components/photos/PhotoViewer";
 import { Button } from "@/components/ui/button";
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { Plus, Download } from "lucide-react";
 import {
   BumpPhoto,
@@ -138,36 +139,40 @@ export default function Photos() {
     <AppLayout>
       <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Photo Album</h1>
-            <p className="text-sm text-muted-foreground">
-              {photos.length} {photos.length === 1 ? "photo" : "photos"}
-            </p>
-          </div>
-          <div className="flex gap-2">
-            {photos.length > 0 && (
+        <AnimatedSection delay={0}>
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">Photo Album</h1>
+              <p className="text-sm text-muted-foreground">
+                {photos.length} {photos.length === 1 ? "photo" : "photos"}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              {photos.length > 0 && (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-10 w-10"
+                  onClick={handleExportAll}
+                >
+                  <Download className="h-5 w-5" />
+                </Button>
+              )}
               <Button
-                variant="outline"
                 size="icon"
                 className="h-10 w-10"
-                onClick={handleExportAll}
+                onClick={() => setShowUpload(true)}
               >
-                <Download className="h-5 w-5" />
+                <Plus className="h-5 w-5" />
               </Button>
-            )}
-            <Button
-              size="icon"
-              className="h-10 w-10"
-              onClick={() => setShowUpload(true)}
-            >
-              <Plus className="h-5 w-5" />
-            </Button>
+            </div>
           </div>
-        </div>
+        </AnimatedSection>
 
         {/* Photo Grid */}
-        <PhotoGrid photos={photos} onPhotoClick={setSelectedPhoto} />
+        <AnimatedSection delay={100}>
+          <PhotoGrid photos={photos} onPhotoClick={setSelectedPhoto} />
+        </AnimatedSection>
 
         {/* Upload Dialog */}
         <PhotoUpload

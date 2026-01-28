@@ -2,6 +2,7 @@ import { useState, useMemo, useCallback } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { usePregnancy } from "@/contexts/PregnancyContext";
 import {
   format,
@@ -143,222 +144,236 @@ export default function CalendarPage() {
     <AppLayout>
       <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
         {/* Header */}
-        <div className="mb-4 sm:mb-6">
-          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Calendar</h1>
-          <p className="text-muted-foreground text-sm sm:text-base">Track your pregnancy journey</p>
-        </div>
+        <AnimatedSection delay={0}>
+          <div className="mb-4 sm:mb-6">
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Calendar</h1>
+            <p className="text-muted-foreground text-sm sm:text-base">Track your pregnancy journey</p>
+          </div>
+        </AnimatedSection>
 
         {/* Week Navigation */}
-        <Card className="mb-3 sm:mb-4">
-          <CardContent className="p-3 sm:p-4">
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={goToPreviousWeek}
-                className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
-              >
-                <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-              </Button>
+        <AnimatedSection delay={100}>
+          <Card className="mb-3 sm:mb-4">
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={goToPreviousWeek}
+                  className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
+                >
+                  <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
 
-              <div className="text-center flex-1 px-2">
-                <p className="font-semibold text-foreground text-sm sm:text-base">
-                  {format(currentWeekStart, "MMM d")} -{" "}
-                  {format(endOfWeek(currentWeekStart, { weekStartsOn: 0 }), "MMM d, yyyy")}
-                </p>
-                {currentWeekGA && (
-                  <p className="text-xs sm:text-sm text-primary font-medium">
-                    Week {currentWeekGA.weeks}
+                <div className="text-center flex-1 px-2">
+                  <p className="font-semibold text-foreground text-sm sm:text-base">
+                    {format(currentWeekStart, "MMM d")} -{" "}
+                    {format(endOfWeek(currentWeekStart, { weekStartsOn: 0 }), "MMM d, yyyy")}
                   </p>
-                )}
+                  {currentWeekGA && (
+                    <p className="text-xs sm:text-sm text-primary font-medium">
+                      Week {currentWeekGA.weeks}
+                    </p>
+                  )}
+                </div>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={goToNextWeek}
+                  className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
+                >
+                  <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
               </div>
 
               <Button
-                variant="ghost"
-                size="icon"
-                onClick={goToNextWeek}
-                className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
+                variant="outline"
+                size="sm"
+                onClick={goToToday}
+                className="w-full h-9 sm:h-10 text-sm touch-manipulation"
               >
-                <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                Go to Today
               </Button>
-            </div>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={goToToday}
-              className="w-full h-9 sm:h-10 text-sm touch-manipulation"
-            >
-              Go to Today
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Week Milestone */}
-        {milestone && (
-          <Card className="mb-3 sm:mb-4 bg-gradient-to-r from-primary/10 to-accent">
-            <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
-              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
-              <p className="text-foreground font-medium text-sm sm:text-base">{milestone}</p>
             </CardContent>
           </Card>
-        )}
+        </AnimatedSection>
+
+        {/* Week Milestone */}
+        <AnimatedSection delay={200}>
+          {milestone && (
+            <Card className="mb-3 sm:mb-4 bg-gradient-to-r from-primary/10 to-accent">
+              <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+                <p className="text-foreground font-medium text-sm sm:text-base">{milestone}</p>
+              </CardContent>
+            </Card>
+          )}
+        </AnimatedSection>
 
         {/* Week Grid Header */}
-        <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2 sm:mb-4">
-          {["S", "M", "T", "W", "T", "F", "S"].map((day, idx) => (
-            <div
-              key={idx}
-              className="text-center text-[10px] sm:text-xs font-medium text-muted-foreground py-1 sm:py-2"
-            >
-              <span className="hidden sm:inline">{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][idx]}</span>
-              <span className="sm:hidden">{day}</span>
-            </div>
-          ))}
-        </div>
+        <AnimatedSection delay={300}>
+          <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2 sm:mb-4">
+            {["S", "M", "T", "W", "T", "F", "S"].map((day, idx) => (
+              <div
+                key={idx}
+                className="text-center text-[10px] sm:text-xs font-medium text-muted-foreground py-1 sm:py-2"
+              >
+                <span className="hidden sm:inline">{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][idx]}</span>
+                <span className="sm:hidden">{day}</span>
+              </div>
+            ))}
+          </div>
+        </AnimatedSection>
 
         {/* Swipeable Week Grid */}
-        <div
-          {...swipeHandlers}
-          className={cn(
-            "grid grid-cols-7 gap-1 sm:gap-2 transition-all duration-150",
-            isTransitioning && transitionDirection === "left" && "translate-x-[-20px] opacity-50",
-            isTransitioning && transitionDirection === "right" && "translate-x-[20px] opacity-50"
-          )}
-        >
-          {weekDays.map((day) => {
-            const log = getLogForDate(day);
-            const dayGA = getGestationalAgeForDate(day);
-            const isCurrentDay = isToday(day);
-            const isPast = day < new Date() && !isCurrentDay;
-            const isFuture = day > new Date();
-            const dueDate = new Date(profile.dueDate);
-            const isDueDate = isSameDay(day, dueDate);
-            const isSelected = selectedDate && isSameDay(day, selectedDate);
+        <AnimatedSection delay={400}>
+          <div
+            {...swipeHandlers}
+            className={cn(
+              "grid grid-cols-7 gap-1 sm:gap-2 transition-all duration-150",
+              isTransitioning && transitionDirection === "left" && "translate-x-[-20px] opacity-50",
+              isTransitioning && transitionDirection === "right" && "translate-x-[20px] opacity-50"
+            )}
+          >
+            {weekDays.map((day) => {
+              const log = getLogForDate(day);
+              const dayGA = getGestationalAgeForDate(day);
+              const isCurrentDay = isToday(day);
+              const isPast = day < new Date() && !isCurrentDay;
+              const isFuture = day > new Date();
+              const dueDate = new Date(profile.dueDate);
+              const isDueDate = isSameDay(day, dueDate);
+              const isSelected = selectedDate && isSameDay(day, selectedDate);
 
-            return (
-              <Card
-                key={day.toISOString()}
-                onClick={() => {
-                  setSelectedDate(day);
-                  if (isHapticsEnabled()) hapticFeedback("light");
-                }}
-                className={cn(
-                  "transition-all cursor-pointer active:scale-95 touch-manipulation",
-                  isCurrentDay && "ring-2 ring-primary",
-                  isDueDate && "ring-2 ring-chart-1 bg-chart-1/10",
-                  log && "bg-primary/5",
-                  isSelected && !isCurrentDay && !isDueDate && "ring-2 ring-secondary"
-                )}
-              >
-                <CardContent className="p-1.5 sm:p-2 text-center">
-                  <p
-                    className={cn(
-                      "text-base sm:text-lg font-semibold",
-                      isCurrentDay && "text-primary",
-                      isFuture && !isDueDate && "text-muted-foreground",
-                      isDueDate && "text-chart-1"
-                    )}
-                  >
-                    {format(day, "d")}
-                  </p>
-                  {dayGA && dayGA.weeks > 0 && (
-                    <p className="text-[9px] sm:text-xs text-muted-foreground">
-                      W{dayGA.weeks}D{dayGA.days}
-                    </p>
+              return (
+                <Card
+                  key={day.toISOString()}
+                  onClick={() => {
+                    setSelectedDate(day);
+                    if (isHapticsEnabled()) hapticFeedback("light");
+                  }}
+                  className={cn(
+                    "transition-all cursor-pointer active:scale-95 touch-manipulation",
+                    isCurrentDay && "ring-2 ring-primary",
+                    isDueDate && "ring-2 ring-chart-1 bg-chart-1/10",
+                    log && "bg-primary/5",
+                    isSelected && !isCurrentDay && !isDueDate && "ring-2 ring-secondary"
                   )}
-                  {log && (
-                    <div className="mt-0.5 sm:mt-1 flex justify-center gap-0.5">
-                      {log.mood && (
-                        <span className="text-[10px] sm:text-xs">
-                          {log.mood.value >= 4 ? "😊" : log.mood.value >= 3 ? "😐" : "😔"}
-                        </span>
+                >
+                  <CardContent className="p-1.5 sm:p-2 text-center">
+                    <p
+                      className={cn(
+                        "text-base sm:text-lg font-semibold",
+                        isCurrentDay && "text-primary",
+                        isFuture && !isDueDate && "text-muted-foreground",
+                        isDueDate && "text-chart-1"
                       )}
-                    </div>
-                  )}
-                  {isDueDate && (
-                    <p className="text-[9px] sm:text-xs font-medium text-chart-1">EDD</p>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+                    >
+                      {format(day, "d")}
+                    </p>
+                    {dayGA && dayGA.weeks > 0 && (
+                      <p className="text-[9px] sm:text-xs text-muted-foreground">
+                        W{dayGA.weeks}D{dayGA.days}
+                      </p>
+                    )}
+                    {log && (
+                      <div className="mt-0.5 sm:mt-1 flex justify-center gap-0.5">
+                        {log.mood && (
+                          <span className="text-[10px] sm:text-xs">
+                            {log.mood.value >= 4 ? "😊" : log.mood.value >= 3 ? "😐" : "😔"}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {isDueDate && (
+                      <p className="text-[9px] sm:text-xs font-medium text-chart-1">EDD</p>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </AnimatedSection>
 
         {/* Selected Day Details */}
         {selectedDate && (
-          <Card 
-            className="mt-3 sm:mt-4 animate-fade-in"
-            {...daySwipeHandlers}
-          >
-            <CardContent className="p-3 sm:p-4">
-              <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
-                {format(selectedDate, "EEEE, MMMM d")}
-              </h3>
-              {(() => {
-                const log = getLogForDate(selectedDate);
-                const dayGA = getGestationalAgeForDate(selectedDate);
-                
-                return (
-                  <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
-                    {dayGA && (
-                      <p className="text-muted-foreground">
-                        Week {dayGA.weeks}, Day {dayGA.days}
+          <AnimatedSection delay={0} direction="scale">
+            <Card 
+              className="mt-3 sm:mt-4"
+              {...daySwipeHandlers}
+            >
+              <CardContent className="p-3 sm:p-4">
+                <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
+                  {format(selectedDate, "EEEE, MMMM d")}
+                </h3>
+                {(() => {
+                  const log = getLogForDate(selectedDate);
+                  const dayGA = getGestationalAgeForDate(selectedDate);
+                  
+                  return (
+                    <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+                      {dayGA && (
+                        <p className="text-muted-foreground">
+                          Week {dayGA.weeks}, Day {dayGA.days}
+                        </p>
+                      )}
+                      {log ? (
+                        <div className="space-y-1">
+                          {log.mood && (
+                            <p>
+                              Mood: {log.mood.label}
+                            </p>
+                          )}
+                          {log.energy && (
+                            <p>
+                              Energy: {log.energy.label}
+                            </p>
+                          )}
+                          {log.symptoms && log.symptoms.length > 0 && (
+                            <p>
+                              Symptoms: {log.symptoms.length} logged
+                            </p>
+                          )}
+                          {log.notes && (
+                            <p className="text-muted-foreground italic">
+                              "{log.notes}"
+                            </p>
+                          )}
+                        </div>
+                      ) : (
+                        <p className="text-muted-foreground">
+                          No log for this day
+                        </p>
+                      )}
+                      <p className="text-[10px] sm:text-xs text-muted-foreground mt-2">
+                        Swipe left/right to change day
                       </p>
-                    )}
-                    {log ? (
-                      <div className="space-y-1">
-                        {log.mood && (
-                          <p>
-                            Mood: {log.mood.label}
-                          </p>
-                        )}
-                        {log.energy && (
-                          <p>
-                            Energy: {log.energy.label}
-                          </p>
-                        )}
-                        {log.symptoms && log.symptoms.length > 0 && (
-                          <p>
-                            Symptoms: {log.symptoms.length} logged
-                          </p>
-                        )}
-                        {log.notes && (
-                          <p className="text-muted-foreground italic">
-                            "{log.notes}"
-                          </p>
-                        )}
-                      </div>
-                    ) : (
-                      <p className="text-muted-foreground">
-                        No log for this day
-                      </p>
-                    )}
-                    <p className="text-[10px] sm:text-xs text-muted-foreground mt-2">
-                      Swipe left/right to change day
-                    </p>
-                  </div>
-                );
-              })()}
-            </CardContent>
-          </Card>
+                    </div>
+                  );
+                })()}
+              </CardContent>
+            </Card>
+          </AnimatedSection>
         )}
 
         {/* Legend */}
-        <div className="mt-4 sm:mt-6 flex flex-wrap gap-3 sm:gap-4 justify-center text-xs sm:text-sm">
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="h-3 w-3 sm:h-4 sm:w-4 rounded ring-2 ring-primary" />
-            <span className="text-muted-foreground">Today</span>
+        <AnimatedSection delay={500}>
+          <div className="mt-4 sm:mt-6 flex flex-wrap gap-3 sm:gap-4 justify-center text-xs sm:text-sm">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="h-3 w-3 sm:h-4 sm:w-4 rounded ring-2 ring-primary" />
+              <span className="text-muted-foreground">Today</span>
+            </div>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="h-3 w-3 sm:h-4 sm:w-4 rounded bg-primary/5" />
+              <span className="text-muted-foreground">Logged</span>
+            </div>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="h-3 w-3 sm:h-4 sm:w-4 rounded ring-2 ring-chart-1 bg-chart-1/10" />
+              <span className="text-muted-foreground">Due Date</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="h-3 w-3 sm:h-4 sm:w-4 rounded bg-primary/5" />
-            <span className="text-muted-foreground">Logged</span>
-          </div>
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="h-3 w-3 sm:h-4 sm:w-4 rounded ring-2 ring-chart-1 bg-chart-1/10" />
-            <span className="text-muted-foreground">Due Date</span>
-          </div>
-        </div>
+        </AnimatedSection>
       </div>
     </AppLayout>
   );
