@@ -170,3 +170,96 @@ All colors MUST be HSL.
     background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(20 50% 94%) 100%);
   }
 }
+
+/* Blob animations */
+@keyframes blob-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(15px, -20px) scale(1.05);
+  }
+  66% {
+    transform: translate(-10px, 10px) scale(0.95);
+  }
+}
+
+@keyframes blob-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes shape-float {
+  0%, 100% {
+    transform: translateY(0) rotate(12deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(18deg);
+  }
+}
+
+@keyframes shape-float-reverse {
+  0%, 100% {
+    transform: translateY(0) rotate(-12deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-6deg);
+  }
+}
+
+@keyframes shape-pulse {
+  0%, 100% {
+    transform: scale(1) rotate(45deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15) rotate(50deg);
+    opacity: 0.8;
+  }
+}
+
+.animate-blob-float {
+  animation: blob-float 20s ease-in-out infinite;
+}
+
+.animate-blob-float-delayed {
+  animation: blob-float 25s ease-in-out infinite;
+  animation-delay: -5s;
+}
+
+.animate-blob-float-slow {
+  animation: blob-float 30s ease-in-out infinite;
+  animation-delay: -10s;
+}
+
+.animate-blob-pulse {
+  animation: blob-pulse 15s ease-in-out infinite;
+}
+
+.animate-blob-pulse-delayed {
+  animation: blob-pulse 18s ease-in-out infinite;
+  animation-delay: -7s;
+}
+
+.animate-shape-float {
+  animation: shape-float 8s ease-in-out infinite;
+}
+
+.animate-shape-float-delayed {
+  animation: shape-float 10s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+.animate-shape-float-slow {
+  animation: shape-float-reverse 12s ease-in-out infinite;
+}
+
+.animate-shape-pulse {
+  animation: shape-pulse 6s ease-in-out infinite;
+}
