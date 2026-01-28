@@ -17,12 +17,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { usePregnancy } from "@/contexts/PregnancyContext";
-import { useAuth } from "@/contexts/AuthContext";
 import { exportAllData, clearAllData } from "@/lib/storage";
 import { format } from "date-fns";
 import {
   User,
-  Calendar,
   Download,
   Trash2,
   Shield,
@@ -32,7 +30,6 @@ import {
   Sun,
   Monitor,
   Vibrate,
-  LogOut,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
@@ -40,7 +37,6 @@ import { isHapticsSupported } from "@/lib/haptics";
 
 export default function Settings() {
   const { profile, resetProfile } = usePregnancy();
-  const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
   const [hapticsEnabled, setHapticsEnabled] = useState(() => {
     if (typeof window !== "undefined") {
@@ -48,11 +44,6 @@ export default function Settings() {
     }
     return true;
   });
-
-  const handleSignOut = async () => {
-    await signOut();
-    toast.success("Signed out successfully");
-  };
 
   const handleExport = () => {
     const data = exportAllData();
@@ -120,31 +111,6 @@ export default function Settings() {
                   {format(new Date(profile.createdAt), "MMM d, yyyy")}
                 </span>
               </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Account */}
-        {user && (
-          <Card className="mb-3 sm:mb-4">
-            <CardHeader className="px-3 sm:px-6 pt-3 sm:pt-6 pb-2 sm:pb-4">
-              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <LogOut className="h-4 w-4 sm:h-5 sm:w-5" />
-                Account
-              </CardTitle>
-              <CardDescription className="text-xs sm:text-sm">
-                Signed in as {user.email}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
-              <Button 
-                variant="outline" 
-                onClick={handleSignOut}
-                className="w-full h-10 sm:h-11 text-sm touch-manipulation"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
-              </Button>
             </CardContent>
           </Card>
         )}
