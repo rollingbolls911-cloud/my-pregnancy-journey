@@ -2,6 +2,7 @@ import { TodayCard } from "@/components/home/TodayCard";
 import { QuickActions } from "@/components/home/QuickActions";
 import { GuidancePreview } from "@/components/home/GuidancePreview";
 import { QuickNotes } from "@/components/home/QuickNotes";
+import { ProfileCard } from "@/components/home/ProfileCard";
 import { ProfileSetup } from "@/components/setup/ProfileSetup";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { usePregnancy } from "@/contexts/PregnancyContext";
@@ -60,16 +61,13 @@ function HomePage() {
   return (
     <AppLayout>
       <div className="px-4 py-5 sm:px-5 sm:py-7 md:px-8 md:py-8 max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="mb-5 sm:mb-7">
-          <p className="text-muted-foreground text-sm sm:text-base">Hello, {profile?.name} 💕</p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mt-0.5">
-            {gestationalAge ? `Week ${gestationalAge.weeks}` : "Your Journey"}
-          </h1>
+        {/* Profile Card */}
+        <div className="mb-5 sm:mb-6">
+          <ProfileCard />
         </div>
 
         {/* Today Card */}
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-5 sm:mb-6">
           <TodayCard />
         </div>
 
