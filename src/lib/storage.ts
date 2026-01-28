@@ -232,6 +232,74 @@ export function exportAllData(): string {
   return JSON.stringify(data, null, 2);
 }
 
+// Export tracker data only (daily logs)
+export function exportTrackerData(): string {
+  const logs = getDailyLogs();
+  const profile = getProfile();
+  
+  // Create a more readable format
+  const data = {
+    name: profile?.name || "Unknown",
+    dueDate: profile?.dueDate,
+    totalEntries: logs.length,
+    logs: logs.map(log => ({
+      date: log.date,
+      mood: log.mood?.label,
+      energy: log.energy?.label,
+      symptoms: log.symptoms.map(s => s.symptomId),
+      notes: log.notes,
+    })),
+    exportedAt: new Date().toISOString(),
+  };
+  
+  return JSON.stringify(data, null, 2);
+}
+
+// Get tracker statistics
+export function getTrackerStats() {
+  const logs = getDailyLogs();
+  const totalDays = logs.length;
+  
+  // Count mood distribution
+  const moodCounts: Record<string, number> = {};
+  logs.forEach(log => {
+    if (log.mood?.label) {
+      moodCounts[log.mood.label] = (moodCounts[log.mood.label] || 0) + 1;
+    }
+  });
+  
+  // Most common symptoms
+  const symptomCounts: Record<string, number> = {};
+  logs.forEach(log => {
+    log.symptoms.forEach(s => {
+      symptomCounts[s.symptomId] = (symptomCounts[s.symptomId] || 0) + 1;
+    });
+  });
+  
+  // Get streak
+  const sortedLogs = [...logs].sort((a, b) => b.date.localeCompare(a.date));
+  let streak = 0;
+  const today = new Date();
+  for (let i = 0; i < sortedLogs.length; i++) {
+    const logDate = new Date(sortedLogs[i].date);
+    const expectedDate = new Date(today);
+    expectedDate.setDate(expectedDate.getDate() - i);
+    
+    if (logDate.toDateString() === expectedDate.toDateString()) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+  
+  return {
+    totalDays,
+    streak,
+    moodCounts,
+    symptomCounts,
+  };
+}
+
 // Clear all data
 export function clearAllData(): void {
   Object.values(STORAGE_KEYS).forEach((key) => {

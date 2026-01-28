@@ -11,10 +11,12 @@ import {
   saveDailyLog,
   getDailyLogByDate,
   DailyLog,
+  exportTrackerData,
+  getTrackerStats,
 } from "@/lib/storage";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { Sparkles, SkipForward } from "lucide-react";
+import { Sparkles, SkipForward, Download, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { hapticFeedback } from "@/lib/haptics";
 import { celebrate } from "@/lib/celebrations";
@@ -134,6 +136,25 @@ export default function Tracker() {
     navigate("/home");
   };
 
+  const handleExport = () => {
+    const data = exportTrackerData();
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `bloom-tracker-${format(new Date(), "yyyy-MM-dd")}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    if (isHapticsEnabled()) hapticFeedback("success");
+    const stats = getTrackerStats();
+    toast.success(`Exported ${stats.totalDays} check-ins 💕`, {
+      description: stats.streak > 0 ? `You're on a ${stats.streak}-day streak!` : undefined,
+    });
+  };
+
   if (!gestationalAge) {
     return (
       <AppLayout>
@@ -157,24 +178,44 @@ export default function Tracker() {
   return (
     <AppLayout>
       <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
-        {/* Header with Skip option */}
+        {/* Header with actions */}
         <AnimatedSection delay={0}>
-          <div className="mb-4 sm:mb-6 flex justify-between items-start">
-            <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-foreground">How are you, {profile?.name}?</h1>
-              <p className="text-muted-foreground text-sm sm:text-base">
-                {format(new Date(), "EEEE, MMMM d")}
-              </p>
+          <div className="mb-4 sm:mb-6">
+            <div className="flex justify-between items-start mb-2">
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground">How are you, {profile?.name}?</h1>
+                <p className="text-muted-foreground text-sm sm:text-base">
+                  {format(new Date(), "EEEE, MMMM d")}
+                </p>
+              </div>
+              <div className="flex gap-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleExport}
+                  className="text-muted-foreground hover:text-foreground"
+                  title="Export your check-ins"
+                >
+                  <Download className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSkip}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <SkipForward className="h-4 w-4 mr-1" />
+                  Skip
+                </Button>
+              </div>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleSkip}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <SkipForward className="h-4 w-4 mr-1" />
-              Skip
-            </Button>
+            {/* Saved indicator */}
+            {getDailyLogByDate(today) && (
+              <div className="flex items-center gap-1.5 text-xs text-primary/80">
+                <CheckCircle2 className="h-3.5 w-3.5" />
+                <span>Today's check-in saved</span>
+              </div>
+            )}
           </div>
         </AnimatedSection>
 
