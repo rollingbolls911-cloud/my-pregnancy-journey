@@ -7,6 +7,7 @@ import { ProfileSetup } from "@/components/setup/ProfileSetup";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { usePregnancy } from "@/contexts/PregnancyContext";
 import { Card, CardContent } from "@/components/ui/card";
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { CalendarCheck, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getUpcomingAppointments } from "@/lib/storage";
@@ -62,36 +63,48 @@ function HomePage() {
     <AppLayout>
       <div className="px-4 py-5 sm:px-5 sm:py-7 md:px-8 md:py-8 max-w-2xl mx-auto">
         {/* Profile Card */}
-        <div className="mb-5 sm:mb-6">
-          <ProfileCard />
-        </div>
+        <AnimatedSection delay={0} direction="up">
+          <div className="mb-5 sm:mb-6">
+            <ProfileCard />
+          </div>
+        </AnimatedSection>
 
         {/* Today Card */}
-        <div className="mb-5 sm:mb-6">
-          <TodayCard />
-        </div>
+        <AnimatedSection delay={100} direction="up">
+          <div className="mb-5 sm:mb-6">
+            <TodayCard />
+          </div>
+        </AnimatedSection>
 
         {/* Quick Actions */}
-        <div className="mb-4 sm:mb-6">
-          <h2 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Quick Actions</h2>
-          <QuickActions />
-        </div>
+        <AnimatedSection delay={200} direction="up">
+          <div className="mb-5 sm:mb-6">
+            <h2 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Quick Actions</h2>
+            <QuickActions />
+          </div>
+        </AnimatedSection>
 
         {/* Quick Notes */}
-        <div className="mb-4 sm:mb-6">
-          <QuickNotes />
-        </div>
+        <AnimatedSection delay={300} direction="up">
+          <div className="mb-5 sm:mb-6">
+            <QuickNotes />
+          </div>
+        </AnimatedSection>
 
         {/* Upcoming Appointment */}
-        <div className="mb-4 sm:mb-6">
-          <h2 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Next Appointment</h2>
-          <UpcomingAppointment />
-        </div>
+        <AnimatedSection delay={400} direction="up">
+          <div className="mb-5 sm:mb-6">
+            <h2 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Next Appointment</h2>
+            <UpcomingAppointment />
+          </div>
+        </AnimatedSection>
 
         {/* Guidance Preview */}
-        <div className="mb-4 sm:mb-6">
-          <GuidancePreview />
-        </div>
+        <AnimatedSection delay={500} direction="up">
+          <div className="mb-5 sm:mb-6">
+            <GuidancePreview />
+          </div>
+        </AnimatedSection>
       </div>
     </AppLayout>
   );
