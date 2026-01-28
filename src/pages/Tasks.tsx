@@ -1,124 +1,100 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { usePregnancy } from "@/contexts/PregnancyContext";
 import { format } from "date-fns";
-import { Plus, Trash2, Sparkles, ListTodo, Heart, PartyPopper, Pill, Droplet, Footprints, Wind, Salad, BedDouble, Activity, PenLine, Phone, Music } from "lucide-react";
+import { 
+  Sparkles, Heart, PartyPopper, ChevronDown, ChevronUp, 
+  Droplet, Apple, Footprints, Activity, Info
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { hapticFeedback } from "@/lib/haptics";
 import { celebrate } from "@/lib/celebrations";
+import { useDailyTasks } from "@/hooks/useDailyTasks";
+import { categoryLabels, dailyTargets, DailyTask } from "@/lib/daily-care-plan";
+import { Progress } from "@/components/ui/progress";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Skeleton } from "@/components/ui/skeleton";
 
-interface Task {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: string;
-}
-
-const STORAGE_KEY = "bloom_daily_tasks";
-
-function getTasks(): Task[] {
-  const today = format(new Date(), "yyyy-MM-dd");
-  const data = localStorage.getItem(`${STORAGE_KEY}_${today}`);
-  return data ? JSON.parse(data) : [];
-}
-
-function saveTasks(tasks: Task[]): void {
-  const today = format(new Date(), "yyyy-MM-dd");
-  localStorage.setItem(`${STORAGE_KEY}_${today}`, JSON.stringify(tasks));
-}
-
-// Suggested tasks based on pregnancy
-const suggestedTasks = [
-  { text: "Take prenatal vitamins", icon: Pill },
-  { text: "Drink 8 glasses of water", icon: Droplet },
-  { text: "Take a short walk", icon: Footprints },
-  { text: "Practice breathing exercises", icon: Wind },
-  { text: "Eat a healthy snack", icon: Salad },
-  { text: "Rest for 20 minutes", icon: BedDouble },
-  { text: "Do gentle stretches", icon: Activity },
-  { text: "Journal your thoughts", icon: PenLine },
-  { text: "Call/text a loved one", icon: Phone },
-  { text: "Listen to calming music", icon: Music },
-];
+const isHapticsEnabled = () => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("bloom-haptics") !== "false";
+  }
+  return true;
+};
 
 export default function Tasks() {
-  const { profile, gestationalAge } = usePregnancy();
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [newTaskText, setNewTaskText] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const { profile } = usePregnancy();
+  const { tasks, loading, toggleTask, stats, isAuthenticated } = useDailyTasks();
+  const [openCategories, setOpenCategories] = useState<Set<string>>(
+    new Set(["morning", "mid-morning", "lunch", "afternoon", "evening", "night"])
+  );
+  const [celebratedAll, setCelebratedAll] = useState(false);
 
-  const isHapticsEnabled = () => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("bloom-haptics") !== "false";
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    setTasks(getTasks());
-  }, []);
-
-  const addTask = (text: string) => {
-    if (!text.trim()) return;
+  const handleToggle = async (taskId: string) => {
+    const wasCompleted = tasks.find(t => t.id === taskId)?.completed;
+    const newCompleted = await toggleTask(taskId);
     
-    const newTask: Task = {
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      text: text.trim(),
-      completed: false,
-      createdAt: new Date().toISOString(),
-    };
-    
-    const updatedTasks = [...tasks, newTask];
-    setTasks(updatedTasks);
-    saveTasks(updatedTasks);
-    setNewTaskText("");
-    setShowSuggestions(false);
-    
-    if (isHapticsEnabled()) hapticFeedback("light");
-    toast("Task added", { duration: 1500, icon: <Heart className="h-4 w-4 text-primary" /> });
-  };
-
-  const toggleTask = (id: string) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    );
-    setTasks(updatedTasks);
-    saveTasks(updatedTasks);
-    
-    const task = tasks.find((t) => t.id === id);
-    if (task && !task.completed) {
-      // Task is being completed
+    if (newCompleted && !wasCompleted) {
       if (isHapticsEnabled()) hapticFeedback("success");
       celebrate("small");
       
       // Check if all tasks are done
-      const completedCount = updatedTasks.filter((t) => t.completed).length;
-      if (completedCount === updatedTasks.length && updatedTasks.length > 0) {
+      const newCompletedCount = tasks.filter(t => t.completed).length + 1;
+      if (newCompletedCount === tasks.length && !celebratedAll) {
+        setCelebratedAll(true);
         setTimeout(() => {
-          toast.success("All done! You're amazing", { duration: 3000, icon: <Sparkles className="h-4 w-4 text-primary" /> });
+          toast.success("All done! You're amazing", { 
+            duration: 3000, 
+            icon: <Sparkles className="h-4 w-4 text-primary" /> 
+          });
           celebrate("medium");
         }, 300);
       }
-    } else {
-      if (isHapticsEnabled()) hapticFeedback("light");
+    } else if (isHapticsEnabled()) {
+      hapticFeedback("light");
     }
   };
 
-  const deleteTask = (id: string) => {
-    const updatedTasks = tasks.filter((task) => task.id !== id);
-    setTasks(updatedTasks);
-    saveTasks(updatedTasks);
-    if (isHapticsEnabled()) hapticFeedback("light");
+  const toggleCategory = (category: string) => {
+    setOpenCategories(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(category)) {
+        newSet.delete(category);
+      } else {
+        newSet.add(category);
+      }
+      return newSet;
+    });
   };
 
-  const completedCount = tasks.filter((t) => t.completed).length;
-  const totalCount = tasks.length;
+  // Group tasks by category
+  const tasksByCategory = tasks.reduce((acc, task) => {
+    if (!acc[task.category]) {
+      acc[task.category] = [];
+    }
+    acc[task.category].push(task);
+    return acc;
+  }, {} as Record<string, (DailyTask & { completed: boolean })[]>);
+
+  const categories = Object.keys(categoryLabels) as Array<keyof typeof categoryLabels>;
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto space-y-4">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-40 w-full" />
+          <Skeleton className="h-40 w-full" />
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -126,137 +102,171 @@ export default function Tasks() {
         {/* Header */}
         <AnimatedSection delay={0}>
           <div className="mb-4 sm:mb-6">
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground">
-              Today's Tasks
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground font-serif">
+              Daily Care Plan
             </h1>
             <p className="text-muted-foreground text-sm sm:text-base">
               {format(new Date(), "EEEE, MMMM d")}
-              {totalCount > 0 && (
-                <span className="ml-2 text-primary">
-                  · {completedCount}/{totalCount} done
-                </span>
-              )}
             </p>
           </div>
         </AnimatedSection>
 
-        {/* Add Task */}
+        {/* Progress Card */}
         <AnimatedSection delay={100}>
-          <Card className="mb-4">
-            <CardContent className="p-3 sm:p-4">
-              <div className="flex gap-2">
-                <Input
-                  value={newTaskText}
-                  onChange={(e) => setNewTaskText(e.target.value)}
-                  placeholder="Add a task..."
-                  className="flex-1"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      addTask(newTaskText);
-                    }
-                  }}
-                />
-                <Button
-                  onClick={() => addTask(newTaskText)}
-                  disabled={!newTaskText.trim()}
-                  size="icon"
-                  className="h-10 w-10"
-                >
-                  <Plus className="h-5 w-5" />
-                </Button>
+          <Card className="mb-4 overflow-hidden">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-foreground">Today's Progress</span>
+                <span className="text-sm text-primary font-semibold">
+                  {stats.completed}/{stats.total} tasks
+                </span>
               </div>
-              
-              {/* Suggestions toggle */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowSuggestions(!showSuggestions)}
-                className="mt-2 text-muted-foreground text-xs"
-              >
-                <Sparkles className="h-3 w-3 mr-1" />
-                {showSuggestions ? "Hide suggestions" : "Need ideas?"}
-              </Button>
-              
-              {/* Suggested tasks */}
-              {showSuggestions && (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {suggestedTasks.map((suggestion, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => addTask(suggestion.text)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-full bg-accent/60 hover:bg-accent text-foreground border border-border/30 transition-all active:scale-95 touch-manipulation"
-                    >
-                      <suggestion.icon className="h-3.5 w-3.5" />
-                      {suggestion.text}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <Progress value={stats.percentage} className="h-2" />
+              <p className="text-xs text-muted-foreground mt-2">
+                {stats.percentage === 100 
+                  ? "Amazing! All done for today 💛" 
+                  : stats.percentage >= 50 
+                    ? "You're doing great, keep going!" 
+                    : "One step at a time, you've got this"}
+              </p>
             </CardContent>
           </Card>
         </AnimatedSection>
 
-        {/* Task List */}
-        <AnimatedSection delay={200}>
-          {tasks.length === 0 ? (
-            <Card className="border-dashed">
-              <CardContent className="p-6 text-center">
-                <ListTodo className="h-10 w-10 mx-auto text-muted-foreground/50 mb-3" />
-                <p className="text-muted-foreground text-sm">
-                  No tasks yet. Add something small to start your day.
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="space-y-2">
-              {tasks.map((task, index) => (
-                <Card
-                  key={task.id}
-                  className={cn(
-                    "transition-all duration-200",
-                    task.completed && "opacity-60"
-                  )}
-                >
-                  <CardContent className="p-3 sm:p-4 flex items-center gap-3">
-                    <Checkbox
-                      checked={task.completed}
-                      onCheckedChange={() => toggleTask(task.id)}
-                      className="h-5 w-5"
-                    />
-                    <span
-                      className={cn(
-                        "flex-1 text-sm sm:text-base",
-                        task.completed && "line-through text-muted-foreground"
-                      )}
-                    >
-                      {task.text}
-                    </span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => deleteTask(task.id)}
-                      className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+        {/* Daily Targets */}
+        <AnimatedSection delay={150}>
+          <Card className="mb-4 bg-accent/30 border-accent/50">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Info className="h-4 w-4 text-primary" />
+                <span className="text-xs font-medium text-foreground">Daily Targets</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <Droplet className="h-3 w-3 text-sky-500" />
+                  <span>{dailyTargets.water}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Apple className="h-3 w-3 text-rose-400" />
+                  <span>{dailyTargets.fruits}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Footprints className="h-3 w-3 text-emerald-500" />
+                  <span>{dailyTargets.movement}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Activity className="h-3 w-3 text-violet-500" />
+                  <span>{dailyTargets.checkin}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </AnimatedSection>
 
-        {/* Encouragement */}
-        {completedCount > 0 && completedCount === totalCount && totalCount > 0 && (
+        {/* Task Categories */}
+        <div className="space-y-3">
+          {categories.map((category, categoryIndex) => {
+            const categoryTasks = tasksByCategory[category] || [];
+            if (categoryTasks.length === 0) return null;
+
+            const completedInCategory = categoryTasks.filter(t => t.completed).length;
+            const isOpen = openCategories.has(category);
+
+            return (
+              <AnimatedSection key={category} delay={200 + categoryIndex * 50}>
+                <Collapsible open={isOpen} onOpenChange={() => toggleCategory(category)}>
+                  <Card>
+                    <CollapsibleTrigger className="w-full">
+                      <CardHeader className="p-3 pb-2">
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
+                            {categoryLabels[category]}
+                            <span className="text-xs font-normal text-muted-foreground">
+                              {completedInCategory}/{categoryTasks.length}
+                            </span>
+                          </CardTitle>
+                          {isOpen ? (
+                            <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                          ) : (
+                            <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                          )}
+                        </div>
+                      </CardHeader>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <CardContent className="p-3 pt-0 space-y-2">
+                        {categoryTasks.map((task) => (
+                          <div
+                            key={task.id}
+                            className={cn(
+                              "flex items-start gap-3 p-2 rounded-lg transition-all",
+                              task.completed && "opacity-60 bg-accent/20",
+                              task.isPlaceholder && "border border-dashed border-border/60"
+                            )}
+                          >
+                            <Checkbox
+                              checked={task.completed}
+                              onCheckedChange={() => handleToggle(task.id)}
+                              className="mt-0.5 h-5 w-5"
+                              disabled={!isAuthenticated}
+                            />
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2">
+                                <task.icon className={cn(
+                                  "h-4 w-4 shrink-0",
+                                  task.completed ? "text-primary" : "text-muted-foreground"
+                                )} />
+                                <span
+                                  className={cn(
+                                    "text-sm",
+                                    task.completed && "line-through text-muted-foreground"
+                                  )}
+                                >
+                                  {task.text}
+                                </span>
+                              </div>
+                              {task.note && (
+                                <p className="text-xs text-muted-foreground mt-1 ml-6">
+                                  {task.note}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </CollapsibleContent>
+                  </Card>
+                </Collapsible>
+              </AnimatedSection>
+            );
+          })}
+        </div>
+
+        {/* All Done Celebration */}
+        {stats.percentage === 100 && (
           <AnimatedSection delay={0} direction="scale">
             <Card className="mt-4 bg-gradient-to-r from-primary/10 to-accent">
               <CardContent className="p-4 text-center">
                 <PartyPopper className="h-6 w-6 mx-auto text-primary mb-2" />
-                <p className="font-medium text-foreground">
+                <p className="font-medium text-foreground font-serif">
                   You did it! All tasks complete
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  You're doing beautifully, {profile?.name}
+                  You're doing beautifully, {profile?.name || "mama"}
+                </p>
+              </CardContent>
+            </Card>
+          </AnimatedSection>
+        )}
+
+        {/* Not authenticated warning */}
+        {!isAuthenticated && (
+          <AnimatedSection delay={300}>
+            <Card className="mt-4 border-amber-200 bg-amber-50/50 dark:bg-amber-950/20 dark:border-amber-800">
+              <CardContent className="p-4 text-center">
+                <Heart className="h-5 w-5 mx-auto text-amber-600 mb-2" />
+                <p className="text-sm text-amber-800 dark:text-amber-200">
+                  Sign in to save your daily progress
                 </p>
               </CardContent>
             </Card>
