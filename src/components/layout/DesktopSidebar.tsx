@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import {
   Home,
-  Calendar,
   Activity,
   Heart,
   BookHeart,
@@ -9,13 +8,14 @@ import {
   CalendarCheck,
   Settings,
   Flower2,
+  ListTodo,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePregnancy } from "@/contexts/PregnancyContext";
 
 const navItems = [
-  { path: "/", icon: Home, label: "Home" },
-  { path: "/calendar", icon: Calendar, label: "Calendar" },
+  { path: "/home", icon: Home, label: "Home" },
+  { path: "/tasks", icon: ListTodo, label: "Tasks" },
   { path: "/tracker", icon: Activity, label: "Tracker" },
   { path: "/guidance", icon: Heart, label: "Guidance" },
   { path: "/journal", icon: BookHeart, label: "Journal" },

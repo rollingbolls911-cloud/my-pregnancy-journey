@@ -7,7 +7,7 @@ import { ThemeProvider } from "next-themes";
 import { PregnancyProvider } from "./contexts/PregnancyContext";
 import Welcome from "./pages/Welcome";
 import Index from "./pages/Index";
-import Calendar from "./pages/Calendar";
+import Tasks from "./pages/Tasks";
 import Tracker from "./pages/Tracker";
 import Guidance from "./pages/Guidance";
 import Journal from "./pages/Journal";
@@ -29,7 +29,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Welcome />} />
               <Route path="/home" element={<Index />} />
-              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/tasks" element={<Tasks />} />
               <Route path="/tracker" element={<Tracker />} />
               <Route path="/guidance" element={<Guidance />} />
               <Route path="/journal" element={<Journal />} />
