@@ -5,6 +5,7 @@ import {
   Activity,
   Heart,
   BookHeart,
+  Camera,
   CalendarCheck,
   Settings,
   Flower2,
@@ -18,6 +19,7 @@ const navItems = [
   { path: "/tracker", icon: Activity, label: "Tracker" },
   { path: "/guidance", icon: Heart, label: "Guidance" },
   { path: "/journal", icon: BookHeart, label: "Journal" },
+  { path: "/photos", icon: Camera, label: "Photos" },
   { path: "/appointments", icon: CalendarCheck, label: "Appointments" },
   { path: "/settings", icon: Settings, label: "Settings" },
 ];

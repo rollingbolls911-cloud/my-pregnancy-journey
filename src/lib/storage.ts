@@ -7,6 +7,7 @@ const STORAGE_KEYS = {
   JOURNAL_ENTRIES: "bloom_journal_entries",
   APPOINTMENTS: "bloom_appointments",
   NOTES: "bloom_notes",
+  BUMP_PHOTOS: "bloom_bump_photos",
 } as const;
 
 // Types
@@ -45,6 +46,15 @@ export interface QuickNote {
   id: string;
   content: string;
   pinned: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BumpPhoto {
+  id: string;
+  imageUrl: string;
+  caption: string;
+  week: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -171,6 +181,42 @@ export function deleteQuickNote(id: string): void {
   localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
 }
 
+// Bump photos storage
+export function saveBumpPhoto(photo: BumpPhoto): void {
+  const photos = getBumpPhotos();
+  const existingIndex = photos.findIndex((p) => p.id === photo.id);
+  
+  if (existingIndex >= 0) {
+    photos[existingIndex] = { ...photo, updatedAt: new Date().toISOString() };
+  } else {
+    photos.push(photo);
+  }
+  
+  // Sort by week
+  photos.sort((a, b) => a.week - b.week);
+  localStorage.setItem(STORAGE_KEYS.BUMP_PHOTOS, JSON.stringify(photos));
+}
+
+export function getBumpPhotos(): BumpPhoto[] {
+  const data = localStorage.getItem(STORAGE_KEYS.BUMP_PHOTOS);
+  return data ? JSON.parse(data) : [];
+}
+
+export function deleteBumpPhoto(id: string): void {
+  const photos = getBumpPhotos().filter((p) => p.id !== id);
+  localStorage.setItem(STORAGE_KEYS.BUMP_PHOTOS, JSON.stringify(photos));
+}
+
+export function updateBumpPhotoCaption(id: string, caption: string): void {
+  const photos = getBumpPhotos();
+  const photo = photos.find((p) => p.id === id);
+  if (photo) {
+    photo.caption = caption;
+    photo.updatedAt = new Date().toISOString();
+    localStorage.setItem(STORAGE_KEYS.BUMP_PHOTOS, JSON.stringify(photos));
+  }
+}
+
 // Export all data
 export function exportAllData(): string {
   const data = {
@@ -179,6 +225,7 @@ export function exportAllData(): string {
     journalEntries: getJournalEntries(),
     appointments: getAppointments(),
     notes: getQuickNotes(),
+    bumpPhotos: getBumpPhotos(),
     exportedAt: new Date().toISOString(),
   };
   
