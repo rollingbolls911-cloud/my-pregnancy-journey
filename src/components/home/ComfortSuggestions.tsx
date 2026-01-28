@@ -85,11 +85,17 @@ export function ComfortSuggestions({ className }: ComfortSuggestionsProps) {
               key={item.id}
               onClick={() => handleSelect(item)}
               className={cn(
-                "px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 touch-manipulation",
+                "px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 touch-manipulation",
                 "bg-accent/60 hover:bg-accent text-foreground",
                 "border border-border/30 hover:border-primary/30",
                 "active:scale-95",
-                selectedId === item.id && "bg-primary/20 border-primary/50 scale-105"
+                "hover:shadow-md hover:shadow-primary/10",
+                selectedId === item.id && [
+                  "bg-primary/20 border-primary/50 scale-105",
+                  "shadow-lg shadow-primary/25",
+                  "animate-[pulse_1s_ease-in-out_1]",
+                  "ring-2 ring-primary/30 ring-offset-2 ring-offset-background"
+                ]
               )}
             >
               <span className="mr-1.5">{item.emoji}</span>
