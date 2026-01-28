@@ -10,6 +10,7 @@ import Calendar from "./pages/Calendar";
 import Tracker from "./pages/Tracker";
 import Guidance from "./pages/Guidance";
 import Journal from "./pages/Journal";
+import Photos from "./pages/Photos";
 import Appointments from "./pages/Appointments";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/tracker" element={<Tracker />} />
               <Route path="/guidance" element={<Guidance />} />
               <Route path="/journal" element={<Journal />} />
+              <Route path="/photos" element={<Photos />} />
               <Route path="/appointments" element={<Appointments />} />
               <Route path="/settings" element={<Settings />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
