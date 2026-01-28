@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,9 +7,16 @@ import { Plus, StickyNote } from "lucide-react";
 import { QuickNote, getQuickNotes, saveQuickNote, deleteQuickNote, generateId } from "@/lib/storage";
 import { SwipeableNote } from "@/components/notes/SwipeableNote";
 import { hapticFeedback } from "@/lib/haptics";
+import { useAuth } from "@/contexts/AuthContext";
+import { useCloudQuickNotes, useSaveCloudQuickNote, useDeleteCloudQuickNote, CloudQuickNote } from "@/hooks/useCloudStorage";
 
 export function QuickNotes() {
-  const [notes, setNotes] = useState<QuickNote[]>(() => getQuickNotes());
+  const { user } = useAuth();
+  const { data: cloudNotes = [], isLoading } = useCloudQuickNotes();
+  const saveCloudNote = useSaveCloudQuickNote();
+  const deleteCloudNote = useDeleteCloudQuickNote();
+  
+  const [localNotes, setLocalNotes] = useState<QuickNote[]>(() => getQuickNotes());
   const [newNote, setNewNote] = useState("");
   const [isAdding, setIsAdding] = useState(false);
 
@@ -20,25 +27,43 @@ export function QuickNotes() {
     return true;
   };
 
-  const refreshNotes = () => {
-    setNotes(getQuickNotes());
+  // Convert cloud notes to local format for display
+  const notes: QuickNote[] = user
+    ? cloudNotes.map((n: CloudQuickNote) => ({
+        id: n.id,
+        content: n.content,
+        pinned: n.pinned,
+        createdAt: n.created_at,
+        updatedAt: n.updated_at,
+      }))
+    : localNotes;
+
+  const refreshLocalNotes = () => {
+    setLocalNotes(getQuickNotes());
   };
 
   const handleAddNote = () => {
     if (!newNote.trim()) return;
 
-    const note: QuickNote = {
-      id: generateId(),
-      content: newNote.trim(),
-      pinned: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    saveQuickNote(note);
+    if (user) {
+      saveCloudNote.mutate({
+        content: newNote.trim(),
+        pinned: false,
+      });
+    } else {
+      const note: QuickNote = {
+        id: generateId(),
+        content: newNote.trim(),
+        pinned: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      saveQuickNote(note);
+      refreshLocalNotes();
+    }
+    
     setNewNote("");
     setIsAdding(false);
-    refreshNotes();
     
     if (isHapticsEnabled()) {
       hapticFeedback("success");
@@ -46,9 +71,17 @@ export function QuickNotes() {
   };
 
   const handleTogglePin = (note: QuickNote) => {
-    const updated = { ...note, pinned: !note.pinned };
-    saveQuickNote(updated);
-    refreshNotes();
+    if (user) {
+      saveCloudNote.mutate({
+        id: note.id,
+        content: note.content,
+        pinned: !note.pinned,
+      });
+    } else {
+      const updated = { ...note, pinned: !note.pinned };
+      saveQuickNote(updated);
+      refreshLocalNotes();
+    }
     
     if (isHapticsEnabled()) {
       hapticFeedback("light");
@@ -56,8 +89,12 @@ export function QuickNotes() {
   };
 
   const handleDelete = (id: string) => {
-    deleteQuickNote(id);
-    refreshNotes();
+    if (user) {
+      deleteCloudNote.mutate(id);
+    } else {
+      deleteQuickNote(id);
+      refreshLocalNotes();
+    }
     
     if (isHapticsEnabled()) {
       hapticFeedback("medium");
@@ -108,7 +145,11 @@ export function QuickNotes() {
           </div>
         )}
 
-        {sortedNotes.length === 0 ? (
+        {isLoading ? (
+          <p className="text-sm text-muted-foreground text-center py-4">
+            Loading notes...
+          </p>
+        ) : sortedNotes.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-4">
             No notes yet. Tap + to add one!
           </p>
