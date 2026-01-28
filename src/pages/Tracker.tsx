@@ -7,6 +7,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { usePregnancy } from "@/contexts/PregnancyContext";
 import { SYMPTOMS } from "@/lib/pregnancy";
 import { defaultMoodOptions, defaultEnergyOptions } from "@/lib/comfort";
+import { moodIcons, energyIcons } from "@/lib/icons";
 import {
   saveDailyLog,
   getDailyLogByDate,
@@ -244,7 +245,10 @@ export default function Tracker() {
                         : "bg-muted/50 active:bg-muted"
                     )}
                   >
-                    <span className="text-xl sm:text-2xl">{mood.emoji}</span>
+                    {(() => {
+                      const MoodIcon = moodIcons[mood.value];
+                      return MoodIcon ? <MoodIcon className="h-5 w-5 sm:h-6 sm:w-6" /> : null;
+                    })()}
                     <span className="text-[10px] sm:text-xs text-muted-foreground">{mood.label}</span>
                   </button>
                 ))}

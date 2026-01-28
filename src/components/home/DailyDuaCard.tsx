@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getDailyDua, getRandomDua, Dua } from "@/lib/duas";
-import { BookOpen, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
+import { BookOpen, RefreshCw, ChevronDown, ChevronUp, HandHeart } from "lucide-react";
 import { hapticFeedback } from "@/lib/haptics";
 import { cn } from "@/lib/utils";
 
@@ -63,7 +63,7 @@ export function DailyDuaCard() {
             className="w-full p-4 flex items-center gap-3 text-left"
           >
             <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-chart-1/20 flex items-center justify-center">
-              <span className="text-lg">🤲</span>
+              <HandHeart className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">

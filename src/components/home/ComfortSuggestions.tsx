@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getPreferredComfortItems, ComfortItem } from "@/lib/comfort";
-import { Sparkles, Settings2 } from "lucide-react";
+import { comfortIcons } from "@/lib/icons";
+import { Sparkles, Settings2, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { hapticFeedback } from "@/lib/haptics";
 import { toast } from "sonner";
@@ -29,13 +30,13 @@ export function ComfortSuggestions({ className }: ComfortSuggestionsProps) {
     
     // Show encouraging message
     const messages = [
-      `${item.emoji} Take your time`,
-      `${item.emoji} That sounds lovely`,
-      `${item.emoji} Good choice, you deserve it`,
-      `${item.emoji} Caring for yourself matters`,
+      "Take your time",
+      "That sounds lovely",
+      "Good choice, you deserve it",
+      "Caring for yourself matters",
     ];
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-    toast(randomMessage, { duration: 2000 });
+    toast(randomMessage, { duration: 2000, icon: <Heart className="h-4 w-4 text-primary" /> });
 
     // Reset after a moment
     setTimeout(() => setSelectedId(null), 2000);
@@ -98,7 +99,10 @@ export function ComfortSuggestions({ className }: ComfortSuggestionsProps) {
                 ]
               )}
             >
-              <span className="mr-1.5">{item.emoji}</span>
+              {(() => {
+                const ItemIcon = comfortIcons[item.iconKey];
+                return ItemIcon ? <ItemIcon className="h-4 w-4 mr-1.5" /> : null;
+              })()}
               {item.label}
             </button>
           ))}

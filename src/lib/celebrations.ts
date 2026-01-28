@@ -65,17 +65,17 @@ export function shouldCelebrate(
 ): { celebrate: boolean; level: CelebrationLevel; message?: string } {
   // Trimester changes
   if (currentWeek === 13 && currentDay === 0 && previousWeek === 12) {
-    return { celebrate: true, level: "large", message: "🎉 Welcome to the Second Trimester!" };
+    return { celebrate: true, level: "large", message: "Welcome to the Second Trimester!" };
   }
   if (currentWeek === 27 && currentDay === 0 && previousWeek === 26) {
-    return { celebrate: true, level: "large", message: "🎉 Welcome to the Third Trimester!" };
+    return { celebrate: true, level: "large", message: "Welcome to the Third Trimester!" };
   }
   
   // Week milestones
   if (currentDay === 0 && previousWeek !== undefined && currentWeek > previousWeek) {
     // Every 4 weeks milestone
     if (currentWeek % 4 === 0) {
-      return { celebrate: true, level: "medium", message: `🌟 Week ${currentWeek} milestone!` };
+      return { celebrate: true, level: "medium", message: `Week ${currentWeek} milestone!` };
     }
     // Regular week change
     return { celebrate: true, level: "small" };

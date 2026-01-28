@@ -202,7 +202,7 @@ export default function Settings() {
               Privacy & Safety
             </CardTitle>
             <CardDescription className="text-xs sm:text-sm">
-              Your data stays private, always 💕
+              Your data stays private, always
             </CardDescription>
           </CardHeader>
           <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6 space-y-3 sm:space-y-4">
@@ -302,7 +302,7 @@ export default function Settings() {
                   <p className="text-[10px] sm:text-xs text-muted-foreground">
                     This app offers guidance and support, not medical advice. Please always 
                     reach out to your doctor or healthcare provider for any health concerns. 
-                    Your wellbeing matters most 💕
+                    Your wellbeing matters most.
                   </p>
                 </div>
               </div>

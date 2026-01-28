@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { usePregnancy } from "@/contexts/PregnancyContext";
 import { format } from "date-fns";
-import { Plus, Trash2, Sparkles, ListTodo } from "lucide-react";
+import { Plus, Trash2, Sparkles, ListTodo, Heart, PartyPopper, Pill, Droplet, Footprints, Wind, Salad, BedDouble, Activity, PenLine, Phone, Music } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { hapticFeedback } from "@/lib/haptics";
@@ -35,16 +35,16 @@ function saveTasks(tasks: Task[]): void {
 
 // Suggested tasks based on pregnancy
 const suggestedTasks = [
-  "Take prenatal vitamins 💊",
-  "Drink 8 glasses of water 💧",
-  "Take a short walk 🚶‍♀️",
-  "Practice breathing exercises 🧘‍♀️",
-  "Eat a healthy snack 🥗",
-  "Rest for 20 minutes 😴",
-  "Do gentle stretches 🤸‍♀️",
-  "Journal your thoughts 📝",
-  "Call/text a loved one 💕",
-  "Listen to calming music 🎵",
+  { text: "Take prenatal vitamins", icon: Pill },
+  { text: "Drink 8 glasses of water", icon: Droplet },
+  { text: "Take a short walk", icon: Footprints },
+  { text: "Practice breathing exercises", icon: Wind },
+  { text: "Eat a healthy snack", icon: Salad },
+  { text: "Rest for 20 minutes", icon: BedDouble },
+  { text: "Do gentle stretches", icon: Activity },
+  { text: "Journal your thoughts", icon: PenLine },
+  { text: "Call/text a loved one", icon: Phone },
+  { text: "Listen to calming music", icon: Music },
 ];
 
 export default function Tasks() {
@@ -81,7 +81,7 @@ export default function Tasks() {
     setShowSuggestions(false);
     
     if (isHapticsEnabled()) hapticFeedback("light");
-    toast("Task added 💕", { duration: 1500 });
+    toast("Task added", { duration: 1500, icon: <Heart className="h-4 w-4 text-primary" /> });
   };
 
   const toggleTask = (id: string) => {
@@ -101,7 +101,7 @@ export default function Tasks() {
       const completedCount = updatedTasks.filter((t) => t.completed).length;
       if (completedCount === updatedTasks.length && updatedTasks.length > 0) {
         setTimeout(() => {
-          toast.success("All done! You're amazing 🌟", { duration: 3000 });
+          toast.success("All done! You're amazing", { duration: 3000, icon: <Sparkles className="h-4 w-4 text-primary" /> });
           celebrate("medium");
         }, 300);
       }
@@ -183,10 +183,11 @@ export default function Tasks() {
                   {suggestedTasks.map((suggestion, idx) => (
                     <button
                       key={idx}
-                      onClick={() => addTask(suggestion)}
-                      className="px-3 py-1.5 text-xs rounded-full bg-accent/60 hover:bg-accent text-foreground border border-border/30 transition-all active:scale-95 touch-manipulation"
+                      onClick={() => addTask(suggestion.text)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-full bg-accent/60 hover:bg-accent text-foreground border border-border/30 transition-all active:scale-95 touch-manipulation"
                     >
-                      {suggestion}
+                      <suggestion.icon className="h-3.5 w-3.5" />
+                      {suggestion.text}
                     </button>
                   ))}
                 </div>
@@ -202,7 +203,7 @@ export default function Tasks() {
               <CardContent className="p-6 text-center">
                 <ListTodo className="h-10 w-10 mx-auto text-muted-foreground/50 mb-3" />
                 <p className="text-muted-foreground text-sm">
-                  No tasks yet. Add something small to start your day 💕
+                  No tasks yet. Add something small to start your day.
                 </p>
               </CardContent>
             </Card>
@@ -250,12 +251,12 @@ export default function Tasks() {
           <AnimatedSection delay={0} direction="scale">
             <Card className="mt-4 bg-gradient-to-r from-primary/10 to-accent">
               <CardContent className="p-4 text-center">
-                <Sparkles className="h-6 w-6 mx-auto text-primary mb-2" />
+                <PartyPopper className="h-6 w-6 mx-auto text-primary mb-2" />
                 <p className="font-medium text-foreground">
-                  You did it! All tasks complete 🎉
+                  You did it! All tasks complete
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  You're doing beautifully, {profile?.name} 💕
+                  You're doing beautifully, {profile?.name}
                 </p>
               </CardContent>
             </Card>

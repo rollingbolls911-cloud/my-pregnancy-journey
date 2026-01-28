@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { defaultComfortItems, getComfortPreferences, saveComfortPreferences, ComfortItem } from "@/lib/comfort";
+import { comfortIcons } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { Sparkles, Check } from "lucide-react";
 import { toast } from "sonner";
@@ -33,7 +34,7 @@ export function ComfortPreferencesSettings() {
     saveComfortPreferences(selectedIds);
     setHasChanges(false);
     if (isHapticsEnabled()) hapticFeedback("success");
-    toast.success("Preferences saved 💕");
+    toast.success("Preferences saved");
   };
 
   const groupedItems = {
@@ -80,7 +81,10 @@ export function ComfortPreferencesSettings() {
                       : "bg-muted/30 border-border/30 text-muted-foreground hover:bg-muted/50"
                   )}
                 >
-                  <span className="mr-1.5">{item.emoji}</span>
+                  {(() => {
+                    const ItemIcon = comfortIcons[item.iconKey];
+                    return ItemIcon ? <ItemIcon className="h-4 w-4 mr-1.5" /> : null;
+                  })()}
                   {item.label}
                   {selectedIds.includes(item.id) && (
                     <Check className="inline ml-1.5 h-3 w-3 text-primary" />

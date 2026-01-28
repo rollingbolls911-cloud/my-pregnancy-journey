@@ -51,7 +51,7 @@ export default function Guidance() {
             <TabsTrigger value="advice">Advice</TabsTrigger>
             <TabsTrigger value="avoid">Avoid</TabsTrigger>
             <TabsTrigger value="care">Care</TabsTrigger>
-            <TabsTrigger value="emergency">⚠️</TabsTrigger>
+            <TabsTrigger value="emergency" className="text-destructive">Emergency</TabsTrigger>
           </TabsList>
 
           <TabsContent value="advice">
