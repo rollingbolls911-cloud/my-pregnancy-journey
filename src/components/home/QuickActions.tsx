@@ -40,22 +40,24 @@ const actions = [
 
 export function QuickActions() {
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="grid grid-cols-2 gap-2.5">
       {actions.map((action) => (
         <Link key={action.path} to={action.path}>
           <Card className="transition-all hover:shadow-md active:scale-[0.98] touch-manipulation border-border/30">
-            <CardContent className="p-3 flex items-center gap-3">
-              <div
-                className={cn(
-                  "h-10 w-10 rounded-xl flex items-center justify-center bg-gradient-to-br shadow-sm flex-shrink-0",
-                  action.iconBg
-                )}
-              >
-                <action.icon className={cn("h-5 w-5", action.color.split(" ")[1])} strokeWidth={1.5} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-foreground text-sm">{action.label}</h3>
-                <p className="text-[11px] text-muted-foreground">{action.description}</p>
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2.5">
+                <div
+                  className={cn(
+                    "h-9 w-9 rounded-xl flex items-center justify-center bg-gradient-to-br shadow-sm flex-shrink-0",
+                    action.iconBg
+                  )}
+                >
+                  <action.icon className={cn("h-4 w-4", action.color.split(" ")[1])} strokeWidth={1.5} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-foreground text-xs leading-tight">{action.label}</h3>
+                  <p className="text-[10px] text-muted-foreground leading-tight">{action.description}</p>
+                </div>
               </div>
             </CardContent>
           </Card>
