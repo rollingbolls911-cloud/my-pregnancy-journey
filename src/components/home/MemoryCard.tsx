@@ -68,7 +68,7 @@ export function MemoryCard() {
     setIsExpanded(false);
     
     if (isHapticsEnabled()) hapticFeedback("success");
-    toast.success("Memory saved 💕", {
+    toast.success("Memory saved", {
       description: "You can view all memories in your journal",
     });
 

@@ -46,7 +46,7 @@ export const supportiveMessages = [
 
 export const dailyFocusSuggestions = [
   // Physical
-  "Stay hydrated today 💧",
+  "Stay hydrated today",
   "Take a short, gentle walk",
   "Do some light stretching",
   "Get some fresh air today",
@@ -60,17 +60,17 @@ export const dailyFocusSuggestions = [
   "Let go of one worry today",
   
   // Spiritual
-  "Take a moment for dua/prayer 🤲",
+  "Take a moment for dua or prayer",
   "Listen to something peaceful",
   "Practice gratitude for this journey",
   "Find a quiet moment for reflection",
   "Connect with your baby through words",
   
   // Practical
-  "Take your prenatal vitamin 💊",
+  "Take your prenatal vitamin",
   "Rest when you feel tired",
   "Eat something nourishing",
-  "Drink a warm cup of tea 🍵",
+  "Drink a warm cup of tea",
   "Give yourself a 10-minute break",
 ];
 

@@ -36,7 +36,7 @@ export default function Welcome() {
           Bloom
         </h1>
         <p className="text-lg text-muted-foreground mb-2">
-          Your care companion 💕
+          Your care companion
         </p>
         <p className="text-sm text-muted-foreground/70 mb-10 max-w-xs leading-relaxed">
           A safe, private space for your pregnancy journey—just for you

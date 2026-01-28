@@ -130,7 +130,7 @@ export default function Photos() {
     link.click();
 
     toast({
-      title: "Collage exported! 🎉",
+      title: "Collage exported!",
       description: "Your bump journey collage has been downloaded.",
     });
   };

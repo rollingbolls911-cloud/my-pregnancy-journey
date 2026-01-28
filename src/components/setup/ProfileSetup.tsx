@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePregnancy } from "@/contexts/PregnancyContext";
 import { format, subMonths, addMonths } from "date-fns";
-import { CalendarIcon, Flower2, Heart } from "lucide-react";
+import { CalendarIcon, Flower2, Heart, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function ProfileSetup() {
@@ -140,9 +140,12 @@ export function ProfileSetup() {
           </Button>
 
           {/* Disclaimer */}
-          <p className="text-[10px] sm:text-xs text-center text-muted-foreground pt-1 sm:pt-2">
-            ⚠️ This app provides general guidance only. Always consult your healthcare provider for medical advice.
-          </p>
+          <div className="flex items-start gap-2 pt-1 sm:pt-2">
+            <AlertCircle className="h-3 w-3 text-muted-foreground flex-shrink-0 mt-0.5" />
+            <p className="text-[10px] sm:text-xs text-muted-foreground">
+              This app provides general guidance only. Always consult your healthcare provider for medical advice.
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>
