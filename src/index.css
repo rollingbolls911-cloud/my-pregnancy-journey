@@ -1,139 +1,144 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Merriweather&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Premium Design System - Warm, Happy, Elegant
+   Typography: Fraunces (headings), Inter (body)
+   Palette: Blush/Lavender background, Coral/Rose primary, Mint/Sky accents
 */
 
 @layer base {
   :root {
-    /* Soft pink/peach gradient aesthetic */
-    --background: 20 60% 97%;
-    --foreground: 240 10% 20%;
+    /* Warm blush/lavender background */
+    --background: 340 45% 97%;
+    --foreground: 280 15% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 20%;
+    --card-foreground: 280 15% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 20%;
+    --popover-foreground: 280 15% 18%;
 
-    --primary: 10 70% 65%;
+    /* Coral/Rose primary - warm and inviting */
+    --primary: 355 70% 62%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 20 40% 90%;
-    --secondary-foreground: 240 10% 25%;
+    /* Soft lavender secondary */
+    --secondary: 280 30% 94%;
+    --secondary-foreground: 280 20% 30%;
 
-    --muted: 20 30% 92%;
-    --muted-foreground: 240 5% 45%;
+    /* Blush muted tones */
+    --muted: 340 25% 93%;
+    --muted-foreground: 280 10% 45%;
 
-    --accent: 350 60% 92%;
-    --accent-foreground: 10 70% 55%;
+    /* Mint/Sky accent for calm elements */
+    --accent: 170 45% 92%;
+    --accent-foreground: 170 50% 30%;
 
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 85% 97%;
 
-    --border: 20 20% 88%;
-    --input: 20 20% 88%;
-    --ring: 10 70% 65%;
+    --border: 340 20% 90%;
+    --input: 340 20% 90%;
+    --ring: 355 70% 62%;
 
     --radius: 1.25rem;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 240 10% 20%;
-    --sidebar-primary: 10 70% 65%;
+    --sidebar-foreground: 280 15% 18%;
+    --sidebar-primary: 355 70% 62%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 350 60% 92%;
-    --sidebar-accent-foreground: 10 70% 55%;
-    --sidebar-border: 20 20% 90%;
-    --sidebar-ring: 10 70% 65%;
+    --sidebar-accent: 170 45% 92%;
+    --sidebar-accent-foreground: 170 50% 30%;
+    --sidebar-border: 340 20% 92%;
+    --sidebar-ring: 355 70% 62%;
 
-    --chart-1: 10 70% 65%;
-    --chart-2: 350 60% 70%;
-    --chart-3: 20 50% 75%;
-    --chart-4: 0 60% 80%;
-    --chart-5: 30 40% 70%;
+    /* Chart colors - harmonious warm palette */
+    --chart-1: 355 70% 62%;
+    --chart-2: 320 55% 68%;
+    --chart-3: 280 45% 72%;
+    --chart-4: 170 50% 55%;
+    --chart-5: 35 65% 65%;
 
     --sidebar: 0 0% 100%;
 
-    --font-sans: 'Poppins', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-    --font-serif: 'Merriweather', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    /* Premium Typography */
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+    --font-serif: 'Fraunces', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 
-    --shadow-2xs: 0 1px 2px 0px hsl(10 30% 50% / 0.04);
-    --shadow-xs: 0 1px 3px 0px hsl(10 30% 50% / 0.06);
-    --shadow-sm: 0 2px 8px -2px hsl(10 30% 50% / 0.08), 0 1px 2px -1px hsl(10 30% 50% / 0.04);
-    --shadow: 0 4px 12px -2px hsl(10 30% 50% / 0.1), 0 2px 4px -2px hsl(10 30% 50% / 0.06);
-    --shadow-md: 0 6px 16px -4px hsl(10 30% 50% / 0.12), 0 2px 6px -2px hsl(10 30% 50% / 0.06);
-    --shadow-lg: 0 12px 24px -6px hsl(10 30% 50% / 0.15), 0 4px 8px -2px hsl(10 30% 50% / 0.08);
-    --shadow-xl: 0 20px 40px -8px hsl(10 30% 50% / 0.18), 0 8px 16px -4px hsl(10 30% 50% / 0.1);
-    --shadow-2xl: 0 24px 48px -12px hsl(10 30% 50% / 0.25);
+    /* Softer, warmer shadows */
+    --shadow-2xs: 0 1px 2px 0px hsl(340 30% 50% / 0.04);
+    --shadow-xs: 0 1px 3px 0px hsl(340 30% 50% / 0.06);
+    --shadow-sm: 0 2px 8px -2px hsl(340 30% 50% / 0.08), 0 1px 2px -1px hsl(340 30% 50% / 0.04);
+    --shadow: 0 4px 12px -2px hsl(340 30% 50% / 0.1), 0 2px 4px -2px hsl(340 30% 50% / 0.06);
+    --shadow-md: 0 6px 16px -4px hsl(340 30% 50% / 0.12), 0 2px 6px -2px hsl(340 30% 50% / 0.06);
+    --shadow-lg: 0 12px 24px -6px hsl(340 30% 50% / 0.15), 0 4px 8px -2px hsl(340 30% 50% / 0.08);
+    --shadow-xl: 0 20px 40px -8px hsl(340 30% 50% / 0.18), 0 8px 16px -4px hsl(340 30% 50% / 0.1);
+    --shadow-2xl: 0 24px 48px -12px hsl(340 30% 50% / 0.25);
 
     --tracking-normal: 0em;
     --spacing: 0.25rem;
   }
 
   .dark {
-    /* Warm dark theme with peach/coral accents */
-    --background: 20 15% 12%;
-    --foreground: 20 10% 95%;
+    /* Premium dark theme - deep plum with coral/mint accents */
+    --background: 280 20% 10%;
+    --foreground: 340 20% 95%;
 
-    --card: 20 12% 16%;
-    --card-foreground: 20 10% 95%;
+    --card: 280 18% 14%;
+    --card-foreground: 340 20% 95%;
 
-    --popover: 20 12% 18%;
-    --popover-foreground: 20 10% 95%;
+    --popover: 280 18% 16%;
+    --popover-foreground: 340 20% 95%;
 
-    --primary: 10 65% 60%;
-    --primary-foreground: 20 15% 10%;
+    --primary: 355 65% 58%;
+    --primary-foreground: 280 20% 8%;
 
-    --secondary: 20 15% 25%;
-    --secondary-foreground: 20 10% 90%;
+    --secondary: 280 20% 22%;
+    --secondary-foreground: 340 15% 90%;
 
-    --muted: 20 10% 25%;
-    --muted-foreground: 20 10% 65%;
+    --muted: 280 15% 20%;
+    --muted-foreground: 340 10% 60%;
 
-    --accent: 350 40% 25%;
-    --accent-foreground: 10 60% 70%;
+    --accent: 170 35% 22%;
+    --accent-foreground: 170 45% 70%;
 
     --destructive: 0 70% 55%;
     --destructive-foreground: 0 85% 97%;
 
-    --border: 20 10% 22%;
-    --input: 20 10% 22%;
-    --ring: 10 65% 60%;
+    --border: 280 15% 20%;
+    --input: 280 15% 20%;
+    --ring: 355 65% 58%;
 
-    --sidebar-background: 20 12% 14%;
-    --sidebar-foreground: 20 10% 95%;
-    --sidebar-primary: 10 65% 60%;
-    --sidebar-primary-foreground: 20 15% 10%;
-    --sidebar-accent: 350 40% 25%;
-    --sidebar-accent-foreground: 10 60% 70%;
-    --sidebar-border: 20 10% 22%;
-    --sidebar-ring: 10 65% 60%;
+    --sidebar-background: 280 18% 12%;
+    --sidebar-foreground: 340 20% 95%;
+    --sidebar-primary: 355 65% 58%;
+    --sidebar-primary-foreground: 280 20% 8%;
+    --sidebar-accent: 170 35% 22%;
+    --sidebar-accent-foreground: 170 45% 70%;
+    --sidebar-border: 280 15% 20%;
+    --sidebar-ring: 355 65% 58%;
 
-    --chart-1: 10 65% 60%;
-    --chart-2: 350 50% 55%;
-    --chart-3: 20 45% 50%;
-    --chart-4: 0 50% 60%;
-    --chart-5: 30 35% 50%;
+    --chart-1: 355 65% 58%;
+    --chart-2: 320 50% 55%;
+    --chart-3: 280 40% 50%;
+    --chart-4: 170 45% 45%;
+    --chart-5: 35 55% 55%;
 
-    --sidebar: 20 12% 16%;
+    --sidebar: 280 18% 14%;
 
-    --shadow-2xs: 0 1px 2px 0px hsl(0 0% 0% / 0.2);
-    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-    --shadow-sm: 0 2px 8px -2px hsl(0 0% 0% / 0.3), 0 1px 2px -1px hsl(0 0% 0% / 0.2);
-    --shadow: 0 4px 12px -2px hsl(0 0% 0% / 0.35), 0 2px 4px -2px hsl(0 0% 0% / 0.2);
-    --shadow-md: 0 6px 16px -4px hsl(0 0% 0% / 0.4), 0 2px 6px -2px hsl(0 0% 0% / 0.25);
-    --shadow-lg: 0 12px 24px -6px hsl(0 0% 0% / 0.45), 0 4px 8px -2px hsl(0 0% 0% / 0.3);
-    --shadow-xl: 0 20px 40px -8px hsl(0 0% 0% / 0.5), 0 8px 16px -4px hsl(0 0% 0% / 0.35);
-    --shadow-2xl: 0 24px 48px -12px hsl(0 0% 0% / 0.6);
+    --shadow-2xs: 0 1px 2px 0px hsl(280 30% 5% / 0.3);
+    --shadow-xs: 0 1px 3px 0px hsl(280 30% 5% / 0.35);
+    --shadow-sm: 0 2px 8px -2px hsl(280 30% 5% / 0.4), 0 1px 2px -1px hsl(280 30% 5% / 0.3);
+    --shadow: 0 4px 12px -2px hsl(280 30% 5% / 0.45), 0 2px 4px -2px hsl(280 30% 5% / 0.3);
+    --shadow-md: 0 6px 16px -4px hsl(280 30% 5% / 0.5), 0 2px 6px -2px hsl(280 30% 5% / 0.35);
+    --shadow-lg: 0 12px 24px -6px hsl(280 30% 5% / 0.55), 0 4px 8px -2px hsl(280 30% 5% / 0.4);
+    --shadow-xl: 0 20px 40px -8px hsl(280 30% 5% / 0.6), 0 8px 16px -4px hsl(280 30% 5% / 0.45);
+    --shadow-2xl: 0 24px 48px -12px hsl(280 30% 5% / 0.7);
   }
 }
 
@@ -144,30 +149,46 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    background: linear-gradient(135deg, hsl(20 60% 97%) 0%, hsl(350 50% 95%) 50%, hsl(20 50% 94%) 100%);
+    background: linear-gradient(145deg, hsl(340 45% 97%) 0%, hsl(280 35% 96%) 35%, hsl(340 40% 95%) 70%, hsl(170 30% 96%) 100%);
     min-height: 100vh;
   }
 
   .dark body {
-    background: linear-gradient(135deg, hsl(20 15% 12%) 0%, hsl(350 20% 14%) 50%, hsl(20 12% 13%) 100%);
+    background: linear-gradient(145deg, hsl(280 20% 10%) 0%, hsl(300 18% 11%) 35%, hsl(280 18% 12%) 70%, hsl(280 15% 10%) 100%);
+  }
+
+  /* Premium heading typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-card/80 backdrop-blur-xl border border-border/50 shadow-lg;
+    @apply bg-card/85 backdrop-blur-xl border border-border/40 shadow-lg;
   }
   
   .glass-card-strong {
-    @apply bg-card/90 backdrop-blur-2xl border border-border/40 shadow-xl;
+    @apply bg-card/92 backdrop-blur-2xl border border-border/30 shadow-xl;
   }
 
+  /* Soft gradient backgrounds */
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(350 60% 65%) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(320 55% 65%) 100%);
   }
 
   .gradient-accent {
-    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(20 50% 94%) 100%);
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(200 40% 94%) 100%);
+  }
+
+  .gradient-warm {
+    background: linear-gradient(135deg, hsl(355 70% 95%) 0%, hsl(280 40% 94%) 50%, hsl(170 35% 94%) 100%);
+  }
+
+  .gradient-calm {
+    background: linear-gradient(135deg, hsl(170 45% 94%) 0%, hsl(200 40% 95%) 100%);
   }
 }
 
