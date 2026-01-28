@@ -18,13 +18,13 @@ function UpcomingAppointment() {
   if (!nextAppointment) {
     return (
       <Link to="/appointments">
-        <Card className="transition-all hover:shadow-md">
+        <Card className="transition-all hover:shadow-lg hover:-translate-y-0.5 border-border/30">
           <CardContent className="p-4 flex items-center gap-4">
-            <div className="h-12 w-12 rounded-full bg-chart-1/10 flex items-center justify-center">
-              <CalendarCheck className="h-6 w-6 text-chart-1" />
+            <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-chart-1/20 to-chart-1/5 flex items-center justify-center shadow-sm">
+              <CalendarCheck className="h-6 w-6 text-chart-1" strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <p className="font-medium text-foreground">No upcoming appointments</p>
+              <p className="font-semibold text-foreground">No upcoming appointments</p>
               <p className="text-sm text-muted-foreground">Tap to add one</p>
             </div>
             <ChevronRight className="h-5 w-5 text-muted-foreground" />
@@ -36,13 +36,13 @@ function UpcomingAppointment() {
 
   return (
     <Link to="/appointments">
-      <Card className="transition-all hover:shadow-md">
+      <Card className="transition-all hover:shadow-lg hover:-translate-y-0.5 border-border/30">
         <CardContent className="p-4 flex items-center gap-4">
-          <div className="h-12 w-12 rounded-full bg-chart-1/10 flex items-center justify-center">
-            <CalendarCheck className="h-6 w-6 text-chart-1" />
+          <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-chart-1/20 to-chart-1/5 flex items-center justify-center shadow-sm">
+            <CalendarCheck className="h-6 w-6 text-chart-1" strokeWidth={1.5} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-medium text-foreground truncate">{nextAppointment.title}</p>
+            <p className="font-semibold text-foreground truncate">{nextAppointment.title}</p>
             <p className="text-sm text-muted-foreground">
               {format(new Date(nextAppointment.datetime), "MMM d 'at' h:mm a")}
             </p>
@@ -59,11 +59,11 @@ function HomePage() {
 
   return (
     <AppLayout>
-      <div className="px-3 py-4 sm:px-4 sm:py-6 md:px-8 md:py-8 max-w-2xl mx-auto">
+      <div className="px-4 py-5 sm:px-5 sm:py-7 md:px-8 md:py-8 max-w-2xl mx-auto">
         {/* Header */}
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-5 sm:mb-7">
           <p className="text-muted-foreground text-sm sm:text-base">Hello, {profile?.name} 💕</p>
-          <h1 className="text-xl sm:text-2xl font-bold text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mt-0.5">
             {gestationalAge ? `Week ${gestationalAge.weeks}` : "Your Journey"}
           </h1>
         </div>
