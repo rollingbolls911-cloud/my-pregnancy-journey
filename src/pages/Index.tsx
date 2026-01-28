@@ -4,6 +4,8 @@ import { GuidancePreview } from "@/components/home/GuidancePreview";
 import { QuickNotes } from "@/components/home/QuickNotes";
 import { PersonalizedGreeting } from "@/components/home/PersonalizedGreeting";
 import { ComfortSuggestions } from "@/components/home/ComfortSuggestions";
+import { MemoryCard } from "@/components/home/MemoryCard";
+import { WeeklyRecapCard } from "@/components/home/WeeklyRecapCard";
 import { ProfileSetup } from "@/components/setup/ProfileSetup";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { usePregnancy } from "@/contexts/PregnancyContext";
@@ -92,15 +94,30 @@ function HomePage() {
           </div>
         </AnimatedSection>
 
-        {/* Quick Notes */}
+        {/* Memory Card - the keepsake feature */}
         <AnimatedSection delay={350} direction="up">
+          <div className="mb-5 sm:mb-6">
+            <h2 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Capture a Moment</h2>
+            <MemoryCard />
+          </div>
+        </AnimatedSection>
+
+        {/* Weekly Recap */}
+        <AnimatedSection delay={400} direction="up">
+          <div className="mb-5 sm:mb-6">
+            <WeeklyRecapCard />
+          </div>
+        </AnimatedSection>
+
+        {/* Quick Notes */}
+        <AnimatedSection delay={450} direction="up">
           <div className="mb-5 sm:mb-6">
             <QuickNotes />
           </div>
         </AnimatedSection>
 
         {/* Upcoming Appointment */}
-        <AnimatedSection delay={450} direction="up">
+        <AnimatedSection delay={500} direction="up">
           <div className="mb-5 sm:mb-6">
             <h2 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Next Appointment</h2>
             <UpcomingAppointment />
@@ -108,7 +125,7 @@ function HomePage() {
         </AnimatedSection>
 
         {/* Guidance Preview */}
-        <AnimatedSection delay={550} direction="up">
+        <AnimatedSection delay={600} direction="up">
           <div className="mb-5 sm:mb-6">
             <GuidancePreview />
           </div>

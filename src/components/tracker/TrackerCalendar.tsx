@@ -16,6 +16,7 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getDailyLogs } from "@/lib/storage";
+import { getMemoryDates } from "@/lib/memories";
 import { useSwipeGesture } from "@/hooks/useSwipeGesture";
 import { hapticFeedback } from "@/lib/haptics";
 
@@ -33,6 +34,7 @@ export function TrackerCalendar({ onDateSelect, selectedDate }: TrackerCalendarP
   const [transitionDirection, setTransitionDirection] = useState<"left" | "right" | null>(null);
 
   const dailyLogs = getDailyLogs();
+  const memoryDates = getMemoryDates();
 
   const isHapticsEnabled = () => {
     if (typeof window !== "undefined") {
@@ -80,6 +82,11 @@ export function TrackerCalendar({ onDateSelect, selectedDate }: TrackerCalendarP
   const getLogForDate = (date: Date) => {
     const dateStr = format(date, "yyyy-MM-dd");
     return dailyLogs.find((log) => log.date === dateStr);
+  };
+
+  const hasMemoryForDate = (date: Date) => {
+    const dateStr = format(date, "yyyy-MM-dd");
+    return memoryDates.has(dateStr);
   };
 
   const getGestationalAgeForDate = (date: Date) => {
@@ -148,6 +155,7 @@ export function TrackerCalendar({ onDateSelect, selectedDate }: TrackerCalendarP
         >
           {weekDays.map((day) => {
             const log = getLogForDate(day);
+            const hasMemory = hasMemoryForDate(day);
             const isCurrentDay = isToday(day);
             const dueDate = profile ? new Date(profile.dueDate) : null;
             const isDueDate = dueDate && isSameDay(day, dueDate);
@@ -164,7 +172,7 @@ export function TrackerCalendar({ onDateSelect, selectedDate }: TrackerCalendarP
                   "aspect-square rounded-lg flex flex-col items-center justify-center transition-all touch-manipulation active:scale-95",
                   isCurrentDay && "ring-2 ring-primary bg-primary/10",
                   isDueDate && "ring-2 ring-chart-1 bg-chart-1/10",
-                  log && !isCurrentDay && !isDueDate && "bg-primary/5",
+                  (log || hasMemory) && !isCurrentDay && !isDueDate && "bg-primary/5",
                   isSelected && !isCurrentDay && !isDueDate && "ring-2 ring-secondary"
                 )}
               >
@@ -177,9 +185,15 @@ export function TrackerCalendar({ onDateSelect, selectedDate }: TrackerCalendarP
                 >
                   {format(day, "d")}
                 </span>
-                {log && (
-                  <div className="h-1.5 w-1.5 rounded-full bg-primary mt-0.5" />
-                )}
+                {/* Indicator dots - log (primary) and memory (pink/heart color) */}
+                <div className="flex items-center gap-0.5 mt-0.5">
+                  {log && (
+                    <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  )}
+                  {hasMemory && (
+                    <div className="h-1.5 w-1.5 rounded-full bg-chart-1" />
+                  )}
+                </div>
               </button>
             );
           })}
@@ -189,7 +203,11 @@ export function TrackerCalendar({ onDateSelect, selectedDate }: TrackerCalendarP
         <div className="mt-3 flex gap-4 justify-center text-[10px] text-muted-foreground">
           <div className="flex items-center gap-1">
             <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-            <span>Logged</span>
+            <span>Check-in</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="h-1.5 w-1.5 rounded-full bg-chart-1" />
+            <span>Memory</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="h-2 w-2 rounded ring-1 ring-primary" />
