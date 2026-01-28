@@ -65,9 +65,9 @@ export function TodayCard() {
   const milestone = getWeekMilestone(gestationalAge.weeks);
 
   return (
-    <Card className="overflow-hidden border-none shadow-lg">
-      <div className="bg-gradient-to-br from-primary/10 via-accent to-primary/5 p-1">
-        <CardContent className="bg-card rounded-[calc(var(--radius)-4px)] p-4 sm:p-6">
+    <Card className="overflow-hidden border-border/30 shadow-xl">
+      <div className="bg-gradient-to-br from-primary/15 via-accent/60 to-chart-1/10 p-1.5">
+        <CardContent className="bg-card/90 backdrop-blur-xl rounded-[calc(var(--radius)-6px)] p-5 sm:p-7">
           <div className="flex flex-col items-center text-center">
             {/* Animated Progress Ring - responsive sizing */}
             <AnimatedProgressRing 
@@ -88,28 +88,28 @@ export function TodayCard() {
             </AnimatedProgressRing>
 
             {/* Trimester badge */}
-            <div className="mt-3 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium animate-fade-in">
+            <div className="mt-4 sm:mt-5 inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-primary/15 to-accent/40 text-primary text-xs sm:text-sm font-semibold shadow-sm animate-fade-in">
               <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               {gestationalAge.trimesterName}
             </div>
 
             {/* Milestone message */}
-            <p className="mt-3 sm:mt-4 text-base sm:text-lg text-foreground font-medium animate-fade-in px-2 leading-snug">
+            <p className="mt-4 sm:mt-5 text-base sm:text-lg text-foreground font-medium animate-fade-in px-2 leading-relaxed">
               {milestone}
             </p>
 
             {/* Due date info */}
-            <div className="mt-3 sm:mt-4 flex items-center gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+            <div className="mt-4 sm:mt-5 flex items-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground bg-accent/40 rounded-2xl px-5 py-3">
               <div className="text-center">
-                <p className="font-semibold text-foreground text-sm sm:text-base">{daysRemaining}</p>
-                <p className="text-[10px] sm:text-xs">days to go</p>
+                <p className="font-bold text-foreground text-base sm:text-lg">{daysRemaining}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">days to go</p>
               </div>
-              <div className="h-6 sm:h-8 w-px bg-border" />
+              <div className="h-8 sm:h-10 w-px bg-border/50" />
               <div className="text-center">
-                <p className="font-semibold text-foreground text-sm sm:text-base">
+                <p className="font-bold text-foreground text-base sm:text-lg">
                   {format(new Date(profile.dueDate), "MMM d")}
                 </p>
-                <p className="text-[10px] sm:text-xs">due date</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">due date</p>
               </div>
             </div>
           </div>

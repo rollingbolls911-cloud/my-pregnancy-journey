@@ -12,18 +12,18 @@ const navItems = [
 
 export function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/95 backdrop-blur-md md:hidden safe-area-bottom">
-      <div className="flex items-center justify-around py-1.5 px-1">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/30 bg-card/70 backdrop-blur-2xl md:hidden safe-area-bottom shadow-lg">
+      <div className="flex items-center justify-around py-2 px-2">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
               cn(
-                "flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] transition-all rounded-lg min-w-[56px] touch-manipulation",
+                "flex flex-col items-center gap-1 px-3 py-2 text-[10px] transition-all rounded-2xl min-w-[60px] touch-manipulation",
                 isActive
-                  ? "text-primary"
-                  : "text-muted-foreground active:bg-muted/50"
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground active:bg-accent/50"
               )
             }
           >
@@ -31,12 +31,12 @@ export function BottomNav() {
               <>
                 <item.icon
                   className={cn(
-                    "h-5 w-5 transition-transform",
+                    "h-5 w-5 transition-all duration-200",
                     isActive && "scale-110"
                   )}
-                  strokeWidth={isActive ? 2.5 : 2}
+                  strokeWidth={isActive ? 2.5 : 1.5}
                 />
-                <span className={cn("leading-tight", isActive && "font-medium")}>{item.label}</span>
+                <span className={cn("leading-tight", isActive && "font-semibold")}>{item.label}</span>
               </>
             )}
           </NavLink>

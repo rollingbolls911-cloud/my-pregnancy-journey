@@ -28,11 +28,11 @@ export function DesktopSidebar() {
   const { profile } = usePregnancy();
 
   return (
-    <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border bg-card">
+    <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border/30 bg-card/70 backdrop-blur-2xl shadow-xl">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-6 py-5 border-b border-border">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-          <Flower2 className="h-5 w-5 text-primary" />
+      <div className="flex items-center gap-3 px-6 py-5 border-b border-border/30">
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl gradient-primary shadow-md">
+          <Flower2 className="h-5 w-5 text-primary-foreground" />
         </div>
         <div>
           <h1 className="font-semibold text-foreground">Bloom</h1>
@@ -42,14 +42,14 @@ export function DesktopSidebar() {
 
       {/* User greeting */}
       {profile && (
-        <div className="px-6 py-4 border-b border-border">
+        <div className="px-6 py-4 border-b border-border/30">
           <p className="text-sm text-muted-foreground">Welcome back,</p>
-          <p className="font-medium text-foreground">{profile.name}</p>
+          <p className="font-semibold text-foreground">{profile.name}</p>
         </div>
       )}
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
@@ -57,24 +57,25 @@ export function DesktopSidebar() {
             end={item.path === "/"}
             className={({ isActive }) =>
               cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors",
+                "flex items-center gap-3 px-4 py-3 rounded-2xl text-sm transition-all duration-200",
                 isActive
-                  ? "bg-primary/10 text-primary font-medium"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-primary/15 text-primary font-semibold shadow-sm"
+                  : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
               )
             }
           >
-            <item.icon className="h-5 w-5" />
+            <item.icon className="h-5 w-5" strokeWidth={1.5} />
             <span>{item.label}</span>
           </NavLink>
         ))}
       </nav>
 
       {/* Footer */}
-      <div className="px-6 py-4 border-t border-border">
-        <p className="text-xs text-muted-foreground text-center">
-          Your data stays private 🔒
-        </p>
+      <div className="px-6 py-4 border-t border-border/30">
+        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground bg-accent/50 rounded-xl py-2 px-3">
+          <span>🔒</span>
+          <span>Your data stays private</span>
+        </div>
       </div>
     </aside>
   );
