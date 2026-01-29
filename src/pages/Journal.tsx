@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MemoryTimeline } from "@/components/journal/MemoryTimeline";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +17,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   getJournalEntries,
   saveJournalEntry,
   deleteJournalEntry,
@@ -23,8 +29,9 @@ import {
   generateId,
 } from "@/lib/storage";
 import { format } from "date-fns";
-import { Plus, BookHeart, Trash2, Heart, PenLine } from "lucide-react";
+import { Plus, BookHeart, Trash2, Heart, PenLine, CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export default function Journal() {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
@@ -32,6 +39,7 @@ export default function Journal() {
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   useEffect(() => {
     loadEntries();
@@ -39,7 +47,12 @@ export default function Journal() {
 
   const loadEntries = () => {
     const data = getJournalEntries();
-    setEntries(data.sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
+    // Sort by date field (descending), then by createdAt for same-date entries
+    setEntries(data.sort((a, b) => {
+      const dateCompare = b.date.localeCompare(a.date);
+      if (dateCompare !== 0) return dateCompare;
+      return b.createdAt.localeCompare(a.createdAt);
+    }));
   };
 
   const handleSave = () => {
@@ -50,7 +63,7 @@ export default function Journal() {
 
     const entry: JournalEntry = {
       id: editingEntry?.id || generateId(),
-      date: format(new Date(), "yyyy-MM-dd"),
+      date: format(selectedDate, "yyyy-MM-dd"),
       title: title.trim(),
       content: content.trim(),
       tags: [],
@@ -75,12 +88,14 @@ export default function Journal() {
     setEditingEntry(entry);
     setTitle(entry.title);
     setContent(entry.content);
+    setSelectedDate(new Date(entry.date));
     setIsDialogOpen(true);
   };
 
   const resetForm = () => {
     setTitle("");
     setContent("");
+    setSelectedDate(new Date());
     setEditingEntry(null);
   };
 
@@ -113,6 +128,34 @@ export default function Journal() {
                   </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 pt-4">
+                  {/* Date Picker */}
+                  <div className="space-y-2">
+                    <Label>Date</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !selectedDate && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {selectedDate ? format(selectedDate, "EEEE, MMMM d, yyyy") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={selectedDate}
+                          onSelect={(date) => date && setSelectedDate(date)}
+                          disabled={(date) => date > new Date()}
+                          initialFocus
+                          className={cn("p-3 pointer-events-auto")}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="title">Title</Label>
                     <Input
@@ -129,7 +172,7 @@ export default function Journal() {
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       placeholder="Write about your day, feelings, or anything on your mind..."
-                      className="min-h-[200px] resize-none"
+                      className="min-h-[150px] resize-none"
                     />
                   </div>
                   <div className="flex gap-2 pt-2">
@@ -201,7 +244,7 @@ export default function Journal() {
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1 min-w-0">
                               <p className="text-xs text-muted-foreground mb-1">
-                                {format(new Date(entry.createdAt), "MMMM d, yyyy 'at' h:mm a")}
+                                {format(new Date(entry.date), "EEEE, MMMM d, yyyy")}
                               </p>
                               <h3 className="font-semibold text-foreground mb-1 truncate">
                                 {entry.title}
