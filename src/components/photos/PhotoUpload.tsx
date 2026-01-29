@@ -105,7 +105,6 @@ export function PhotoUpload({ open, onOpenChange, onSave }: PhotoUploadProps) {
             ref={fileInputRef}
             type="file"
             accept="image/*"
-            capture="environment"
             onChange={handleFileChange}
             className="hidden"
           />
